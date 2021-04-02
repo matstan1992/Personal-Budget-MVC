@@ -5,7 +5,7 @@ namespace Core;
 /**
  * Base controller
  *
- * PHP version 7.0
+ * PHP version 7.3
  */
 abstract class Controller
 {

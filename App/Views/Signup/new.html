@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+
+{% block title %}Rejestracja{% endblock %}
+
+{% block footer %}
+
+    <script>
+        
+        $(document).ready(function() {
+
+            /**
+             * Validate the form
+             */
+            $('#formSignup').validate({
+                rules: {
+                    name: {
+						required: true,
+						rangelength: [3, 20]
+					},
+                    email: {
+                        required: true,
+                        email: true,
+                        remote: '/account/validate-email'
+                    },
+                    password1: {
+                        required: true,
+                        rangelength: [6, 20],
+                    },
+					password2: {
+                        equalTo: '#inputPassword1'
+                    }
+				},
+                messages: {
+					name: {
+						rangelength: 'Imię musi posiadać od 3 do 20 znaków!'
+					},
+                    email: {
+                        remote: 'Podany email jest już zajęty!'
+                    },
+					password1: {
+						rangelength: 'Hasło musi posiadać od 8 do 20 znaków!'
+					},
+					password2: {
+                        equalTo: 'Hasła muszą być takie same!'
+                    }
+                }
+            });
+        });
+    </script>
+
+{% endblock %}
+
+{% block body %}
+
+	<header>
+		<div class="container mb-2 text-white text-center text-uppercase">
+			<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
+			<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
+		</div>
+	</header>
+
+	<main>
+		<div class="container">
+			<div class="row m-0">
+				<section id="text" class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-ligh mt-4 mx-auto text-center">
+					<h3 class="h4 font-weight-bold">Kontrola budżetu? Tak!</h3>
+					<p class="mb-2"><b>Osobisty Menadżer Budżetu</b> jest to program stworzony z myślą o osobach, które kontrolują swoje fianse na papierze, bądź chcą dopiero zacząć. Jeśli męczy Cię już ciągłe spisywanie swoich przychodów i wydatków na kolejnych kartkach papieru, a pod koniec miesiąca i tak jest Ci ciężko oszacować czy w danym miesiącu jesteś na plusie czy na minusie, to ten program jest właśnie dla Ciebie! </p><p>Przecież niekontrolowane wydatki to przypuszczalne oszędności :-)</p>
+
+					<h3 class="h4 font-weight-bold">Jak to działa?</h3>
+					<p>Bardzo prosto. Logujemy się na swoje konto, a następnie z menu głównego wybieramy odpowiednią zakładkę. <br/>Chcąc dodać przychód do naszych finansów, wybieramy <b>"Dodaj przychód"</b>, zaznaczamy odpowiednią datę oraz rodzaj przychodu. <br/>Jeśli jest to wydatek klikamy <b>"Dodaj wydatek"</b> i wypełniamy analogicznie jak przy przychodzie. <br/>Natomiast, jeżeli interesuje nas zestawienie przychodów i rozchodów wybieramy <b>"Przeglądaj bilans"</b>. Tam korzystając z opcji wyboru daty możemy w prosty sposób dowiedzieć się czy w interesującym nas okresie nasze finanse są na plusie czy na minusie, no i przede wszystkim <b>ILE</b> ta kwota wynosi.</p> 
+				</section>
+				
+				<section class="row content col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-white my-auto mx-auto">
+				
+					<div class="mx-auto mt-4 mb-2">			
+							<div class="selected mr-2" style="width: 140px;"><h3 class="h5 font-weight-bold">Rejestracja</h3></div>
+							<a href="#"><div class="noselected" style="width: 140px;"><h3 class="h5 font-weight-bold">Logowanie</h3></div></a>	
+					</div>
+					
+				<!--	{% if user.errors is not empty %}
+						<p>Błąd:</p>
+						<ul>
+							{% for error in user.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %} -->
+					
+					<form class="mx-auto mb-4" method="post" action="/signup/create" id="formSignup">
+						
+						<div class="row m-0 justify-content-center">
+							<div class="form-group form-inline">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-user"></i></span></div>
+									<label class="sr-only">Imię użytkownika</label>
+									<input class="form-control col-9" type="text" placeholder="Podaj imię" id="inputName" name="name" autofocus value="{{ user.name }}" required />
+							</div>
+						</div>
+						{% if user.error_name is not empty %}
+								{% for error in user.error_name %}
+									<div class="row mb-2 justify-content-center text-danger">{{ error }}</div>
+								{% endfor %}
+						{% endif %}
+							
+						<div class="row m-0 justify-content-center">
+							<div class="form-group form-inline">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-mail"></i></span></div>
+									<label class="sr-only" for="inputEmail">E-mail</label>
+									<input class="form-control col-9" type="email" placeholder="Podaj e-mail" id="inputEmail" value="{{ user.email }}" required name="email">
+							</div>
+						</div>
+						{% if user.error_email is not empty %}
+								{% for error in user.error_email %}
+									<div class="row mb-2 justify-content-center text-danger">{{ error }}</div>
+								{% endfor %}
+						{% endif %}
+							
+						<div class="row m-0 justify-content-center">
+							<div class="form-group form-inline">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-lock"></i></span></div>
+									<label class="sr-only" for="inputPassword1">Hasło</label>
+									<input class="form-control col-9" type="password" placeholder="Podaj hasło" id="inputPassword1" required name="password1">
+							</div>
+						</div>
+						
+						<div class="row m-0 justify-content-center">
+							<div class="form-group form-inline">
+								<div class="input-group-prepend">
+									<span class="input-group-text"><i class="icon-lock"></i></span></div>
+									<label class="sr-only" for="inputPassword2">Powtórz hasło</label>
+									<input class="form-control col-9" type="password" placeholder="Powtórz hasło" id="inputPassword2" required name="password2">
+							</div>
+						</div>
+						{% if user.error_password is not empty %}
+								{% for error in user.error_password %}
+									<div class="row mb-2 justify-content-center text-danger">{{ error }}</div>
+								{% endfor %}
+						{% endif %}
+						
+						<div class="row">
+							<button type="submit" class="col-12">Zarejestruj</button>
+						</div>
+						
+					</form>
+					
+				</section>
+			</div>
+		</div>
+	</main>
+	
+	<footer class="container-fluid p-3 mt-4 text-center text-white">
+		Wszelkie prawa zastrzeżone &copy; 2020
+	</footer>
+
+{% endblock %}
