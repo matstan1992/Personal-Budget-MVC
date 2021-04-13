@@ -32,22 +32,33 @@
 						<form class="mx-auto mb-4" action="/login/create" method="post">
 						
 							<div class="row m-0 justify-content-center">
-							<div class="form-group form-inline">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="icon-mail"></i></span></div>
-									<label class="sr-only" for="inputEmail">E-mail</label>
-									<input class="form-control col-9" type="email" placeholder="Podaj e-mail" id="inputEmail" value="{{ email }}" required name="email">
+								<div class="form-group form-inline">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="icon-mail"></i></span></div>
+										<label class="sr-only" for="inputEmail">E-mail</label>
+										<input class="form-control col-9" type="email" placeholder="Podaj e-mail" id="inputEmail" value="{{ email }}" required name="email">
+								</div>
 							</div>
-						</div>
 							
-						<div class="row m-0 justify-content-center">
-							<div class="form-group form-inline">
-								<div class="input-group-prepend">
-									<span class="input-group-text"><i class="icon-lock"></i></span></div>
-									<label class="sr-only" for="inputPassword">Hasło</label>
-									<input class="form-control col-9" type="password" placeholder="Podaj hasło" id="inputPassword" required name="password">
+							<div class="row m-0 justify-content-center">
+								<div class="form-group form-inline">
+									<div class="input-group-prepend">
+										<span class="input-group-text"><i class="icon-lock"></i></span></div>
+										<label class="sr-only" for="inputPassword">Hasło</label>
+										<input class="form-control col-9" type="password" placeholder="Podaj hasło" id="inputPassword" required name="password">
+								</div>
 							</div>
-						</div>
+							<div>
+								<label>
+									<input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Zapamiętaj mnie
+								</label>
+							</div>
+							
+							{% for message in flash_messages %}
+								<div class="text-center text-{{ message.type }}">
+									{{ message.body }}
+								</div>
+							{% endfor %}
 						
 							<div class="row">
 								<button type="submit" class="col-12">Zaloguj</button>
