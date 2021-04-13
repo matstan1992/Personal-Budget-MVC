@@ -18,12 +18,12 @@ class Login extends \Core\Controller
      * Show the login page
      *
      * @return void
-     */
+     *
     public function newAction()
     {
         View::renderTemplate('Login/new.html');
     }
-
+*/
     /**
      * Log in a user
      *
@@ -37,11 +37,11 @@ class Login extends \Core\Controller
 			
 			Auth::login($user);
 
-            $this->redirect(Auth::getReturnToPage());
+            $this->redirect('/items/index');
 
         } else {
 
-            View::renderTemplate('Login/new.html', [
+            View::renderTemplate('Home/index.html', [
                 'email' => $_POST['email'],
             ]);
         }
