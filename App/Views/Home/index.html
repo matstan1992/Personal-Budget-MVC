@@ -48,6 +48,11 @@
 										<input class="form-control col-9" type="password" placeholder="Podaj hasło" id="inputPassword" required name="password">
 								</div>
 							</div>
+							<div>
+								<label>
+									<input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Zapamiętaj mnie
+								</label>
+							</div>
 							
 							{% for message in flash_messages %}
 								<div class="text-center text-{{ message.type }}">

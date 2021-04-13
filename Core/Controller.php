@@ -101,7 +101,7 @@ abstract class Controller
 
             Auth::rememberRequestedPage();
 
-            $this->redirect('/home/index');
+            $this->redirect('/');
         }
     }
 }
