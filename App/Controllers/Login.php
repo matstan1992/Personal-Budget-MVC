@@ -42,7 +42,7 @@ class Login extends \Core\Controller
 			
 			Flash::addMessage('Zalogowano pomyślnie');
 			
-            $this->redirect('/items/index');
+            $this->redirect('/MainMenu/index');
 
         } else {
 			
