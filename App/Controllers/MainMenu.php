@@ -3,22 +3,23 @@
 namespace App\Controllers;
 
 use \Core\View;
+use App\Flash;
 
 /**
- * Items controller (example)
+ * MainMenu controller (example)
  *
  * PHP version 7.3
  */
-class Items extends Authenticated
+class MainMenu extends Authenticated
 {
     /**
-     * Items index
+     * MainMenu index
      *
      * @return void
      */
     public function indexAction()
     {
-        View::renderTemplate('Items/index.html');
+        View::renderTemplate('MainMenu/index.html');
     }
 
     /**

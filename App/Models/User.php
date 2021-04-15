@@ -42,6 +42,8 @@ class User extends \Core\Model
      */
     public function save()
     {
+		$success = true;
+		
         $this->validate();
 
         if (empty($this->error_name) && empty($this->error_email) && empty($this->error_password)) {
@@ -58,12 +60,28 @@ class User extends \Core\Model
             $stmt->bindValue(':email', $this->email, PDO::PARAM_STR);
             $stmt->bindValue(':password_hash', $password_hash, PDO::PARAM_STR);
 
-            return $stmt->execute();
+            $success =$success && $stmt->execute();
+			
+			$user_id = $db->lastInsertId();
+			
+			$add_default_payment_methods = "INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT $user_id, name FROM payment_methods_default";
+			$stmt = $db->prepare($add_default_payment_methods);
+			$success =$success && $stmt->execute();
+			
+			$add_default_expenses_category = "INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT $user_id, name FROM expenses_category_default";
+			$stmt = $db->prepare($add_default_expenses_category);
+			$success =$success && $stmt->execute();
+			
+			$add_default_incomes_category = "INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT $user_id, name FROM incomes_category_default";
+			$stmt = $db->prepare($add_default_incomes_category);
+			$success =$success && $stmt->execute();
+			
+			return $success;
         }
 
         return false;
     }
-
+	
     /**
      * Validate current property values, adding valiation error messages to the errors array property
      *
