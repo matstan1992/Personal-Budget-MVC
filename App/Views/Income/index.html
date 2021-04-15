@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+{% block title %}Przychód{% endblock %}
+
+{% block body %}
+
+	<header>
+			<div class="container text-white text-center text-uppercase">
+				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
+				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
+			</div>
+		</header>
+			
+		<nav class="navbar sticky mt-4 navbar-expand-lg navbar-dark">
+			
+			<button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="mainmenu">
+			
+				<ul class="navbar-nav mx-auto">
+				
+					<li class="nav-item">
+						<a class="nav-link" href="/MainMenu"><i class="icon-home"> Strona główna </i></a>
+					</li>
+					
+					<li class="nav-item active">
+						<a class="nav-link" href="/Income"><i class="icon-money"> Dodaj przychód </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="expense.php"><i class="icon-basket"> Dodaj wydatek </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="balance.php"><i class="icon-chart-bar"> Przeglądaj bilans </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="icon-wrench"> Ustawienia </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="logout.php"><i class="icon-logout"> Wyloguj ({{ current_user.username }}) </i></a>
+					</li>
+					
+				</ul>
+			
+			</div>
+			
+		</nav>
+		
+		<main>
+			
+			<article>
+				<div class="container">
+					<div class="row">
+						<div class="mx-auto">
+							{% for message in flash_messages %}
+								<div class="alert alert-{{ message.type }} text-center">
+									{{ message.body }}
+								</div>
+							{% endfor %}
+							<form class="text-center" id="formIncome" method="post" action="/Income/new">
+								<h2 class="font-weight-bold mt-4">Dodaj przychód</h2>
+
+								<div class="row mx-auto mt-4 mb-0">
+									<div class="form-group form-inline mx-auto mb-2">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="icon-money-1"></i></span>
+										</div>
+										<label class="sr-only">Kwota</label>
+										<input type="number" name="amount" min="0" max="999999.99" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required autofocus value="{{ amount }}">
+									</div>
+								</div>
+						
+								<div class="row mx-auto mt-3 mb-0">
+									<div class="form-group form-inline mx-auto mb-2">
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="icon-calendar"></i></span>
+										</div>
+										<label class="sr-only">Data</label>
+										<input type="date" id="date" name="date" aria-label="Data" required value="{{ date }}">
+									</div>
+								</div>
+
+								<fieldset class="mx-auto mt-2">
+									
+									<legend class="font-weight-bold">Kategoria:</legend>
+									
+									{% for category in incomesCategories %}
+										<div style="padding: 1.5px;">
+											<input type="radio" name="category" id="category{{ category.id }}" value="{{ category.id }}" required>
+											<label for="category{{ category.id }}"> {{ category.name }} </label>
+										</div>
+									{% endfor %}
+									
+								</fieldset>
+
+								<div class="mx-auto mt-2 mb-1">
+									<label class="h4 font-weight-bold">Komentarz (opcjonalnie):</label>
+									<textarea name="comment" class="col-10" rows="2" cols="50" style="resize: none;">{{ comment }}</textarea>
+								</div>
+								
+								<div class="row mx-auto">
+									<button id="anuluj" type="submit" class="col-3 mx-auto">Anuluj</button>
+									<button type="submit" class="col-3 mx-auto">Dodaj</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</article>
+			
+		</main>
+		
+		<footer class="container-fluid p-3 mt-4 text-center text-white">
+			Wszelkie prawa zastrzeżone &copy; 2020
+		</footer>
+
+{% endblock %}

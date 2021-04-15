@@ -1,14 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}MainMenu{% endblock %}
+{% block title %}Menu{% endblock %}
 
 {% block body %}
 
-{% for message in flash_messages %}
-	<div class="alert alert-{{ message.type }} text-center">
-		{{ message.body }}
-	</div>
-{% endfor %}
 	<header>
 			<div class="container text-white text-center text-uppercase">
 				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
@@ -27,11 +22,11 @@
 				<ul class="navbar-nav mx-auto">
 				
 					<li class="nav-item active">
-						<a class="nav-link" href="#"><i class="icon-home"> Strona główna </i></a>
+						<a class="nav-link" href="/MainMenu"><i class="icon-home"> Strona główna </i></a>
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="income.php"><i class="icon-money"> Dodaj przychód </i></a>
+						<a class="nav-link" href="/Income"><i class="icon-money"> Dodaj przychód </i></a>
 					</li>
 					
 					<li class="nav-item">
@@ -59,6 +54,11 @@
 		<main>
 		
 			<div class="container mt-3 text-center">
+			{% for message in flash_messages %}
+				<div class="alert alert-{{ message.type }} text-center">
+					{{ message.body }}
+				</div>
+			{% endfor %}
 				<h2 class="mt-5 mb-3">Witaj {{ current_user.username }}, co dziś robimy?</h2>
 				<img class="imagemenu" style="width: 335px; height: 335px;" src="/css/img/imgmenu.jpg" alt="">
 				<h3 class="mt-3">Zaczynajmy!</h3>

@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use \Core\View;
+use App\Flash;
 
 /**
  * MainMenu controller (example)
