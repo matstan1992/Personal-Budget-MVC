@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Przychód{% endblock %}
+{% block title %}Wydatek{% endblock %}
 
 {% block body %}
 
@@ -25,11 +25,11 @@
 						<a class="nav-link" href="/MainMenu"><i class="icon-home"> Strona główna </i></a>
 					</li>
 					
-					<li class="nav-item active">
+					<li class="nav-item">
 						<a class="nav-link" href="/Income"><i class="icon-money"> Dodaj przychód </i></a>
 					</li>
 					
-					<li class="nav-item">
+					<li class="nav-item active">
 						<a class="nav-link" href="/Expense"><i class="icon-basket"> Dodaj wydatek </i></a>
 					</li>
 					
@@ -62,8 +62,8 @@
 									{{ message.body }}
 								</div>
 							{% endfor %}
-							<form class="text-center" method="post" action="/Income/new">
-								<h2 class="font-weight-bold mt-4">Dodaj przychód</h2>
+							<form class="text-center" method="post" action="/Expense/new">
+								<h2 class="font-weight-bold mt-4">Dodaj wydatek</h2>
 
 								<div class="row mx-auto mt-4 mb-0">
 									<div class="form-group form-inline mx-auto mb-2">
@@ -84,13 +84,27 @@
 										<input type="date" id="date" name="date" aria-label="Data" required value="{{ date }}">
 									</div>
 								</div>
+								
+								<fieldset class="mx-auto mt-2">
+									
+									<legend class="font-weight-bold">Sposób płatności:</legend>
+									
+									{% for paymentMethod in paymentMethods %}
+										<div class="d-block mb-1">
+											<input type="radio" name="paymentMethod" id="paymentMethod{{ paymentMethod.id }}" 
+											value="{{ paymentMethod.id }}" required>
+											<label for="paymentMethod{{ paymentMethod.id }}"> {{ paymentMethod.name }} </label>
+										</div>
+									{% endfor %}
+
+								</fieldset>
 
 								<fieldset class="mx-auto mt-2">
 									
 									<legend class="font-weight-bold">Kategoria:</legend>
 									
-									{% for category in incomesCategories %}
-										<div style="padding: 1.5px;">
+									{% for category in expensesCategories %}
+										<div class="column col-sm-4" style="width: 290px; padding: 1.5px;">
 											<input type="radio" name="category" id="category{{ category.id }}" value="{{ category.id }}" required>
 											<label for="category{{ category.id }}"> {{ category.name }} </label>
 										</div>

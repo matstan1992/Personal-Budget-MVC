@@ -34,6 +34,7 @@ $router->add('', ['controller' => 'Home', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
 $router->add('mainmenu', ['controller' => 'MainMenu', 'action' => 'index']);
 $router->add('income', ['controller' => 'Income', 'action' => 'index']);
+$router->add('expense', ['controller' => 'Expense', 'action' => 'index']);
 $router->add('{controller}/{action}');
     
 $router->dispatch($_SERVER['QUERY_STRING']);

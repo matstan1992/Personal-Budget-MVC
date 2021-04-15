@@ -34,6 +34,103 @@ class IncomeExpenseManager extends \Core\Model
 	}
 	
 	/**
+	 * Add new income to database 
+	 *
+	 * @return True if success, False otherwise
+	 */
+	public static function saveIncome()
+	{
+		if (static::validate()) {
+			
+			$sql = "INSERT INTO incomes (id, user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) 
+			VALUES ('NULL', :user_id, :category, :amount, :date, :comment)";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $stmt->bindValue(':date', $_POST['date'], PDO::PARAM_STR);
+            $stmt->bindValue(':category', $_POST['category'], PDO::PARAM_INT);
+            $stmt->bindValue(':comment', $_POST['comment'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		
+		return false;
+		
+	}
+	
+	/**
+	 * Get categories of expenses from database 
+	 * 
+	 * @return array with categories 
+	 */
+	public static function getExpensesCategories()
+	{
+		if (isset($_SESSION['user_id'])) {
+						
+			$sql = "SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+		}
+	}
+	
+	/**
+	 * Get payment methods from database 
+	 * 
+	 * @return array with payment methods 
+	 */
+	public static function getPaymentMethods()
+	{
+		if (isset($_SESSION['user_id'])) {
+						
+			$sql = "SELECT id, name FROM payment_methods_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+			
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+		}
+	}
+	
+	/**
+	 * Add new income to database 
+	 *
+	 * @return True if success, False otherwise
+	 */
+	public static function saveExpense()
+	{
+		if (static::validate()) {
+			
+			$sql = "INSERT INTO expenses (id, user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) 
+			VALUES ('NULL', :user_id, :category, :paymentMethod, :amount, :date, :comment)";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_STR);
+            $stmt->bindValue(':date', $_POST['date'], PDO::PARAM_STR);
+            $stmt->bindValue(':paymentMethod', $_POST['paymentMethod'], PDO::PARAM_INT);
+            $stmt->bindValue(':category', $_POST['category'], PDO::PARAM_INT);
+            $stmt->bindValue(':comment', $_POST['comment'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		
+		return false;
+		
+	}
+	
+	/**
      * Validate current property values, adding valiation error messages to the errors array property
      *
      * @return void
@@ -85,31 +182,4 @@ class IncomeExpenseManager extends \Core\Model
 		return $allGood;
 	}
 	
-	/**
-	 * Add new income to database 
-	 *
-	 * @return True if success, False otherwise
-	 */
-	public static function saveIncome()
-	{
-		if (static::validate()) {
-			
-			$sql = "INSERT INTO incomes (id, user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) 
-			VALUES ('NULL', :user_id, :category, :amount, :date, :comment)";
-			
-			$db = static::getDB();
-            $stmt = $db->prepare($sql);
-
-            $stmt->bindValue(':amount', $_POST['amount'], PDO::PARAM_STR);
-            $stmt->bindValue(':date', $_POST['date'], PDO::PARAM_STR);
-            $stmt->bindValue(':category', $_POST['category'], PDO::PARAM_INT);
-            $stmt->bindValue(':comment', $_POST['comment'], PDO::PARAM_STR);
-            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-
-            return $stmt->execute();
-		}
-		
-		return false;
-		
-	}
 }
