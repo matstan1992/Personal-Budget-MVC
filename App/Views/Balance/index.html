@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block title %}Bilans{% endblock %}
+
+{% block body %}
+
+	<header>
+			<div class="container text-white text-center text-uppercase">
+				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
+				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
+			</div>
+		</header>
+			
+		<nav class="navbar sticky mt-4 navbar-expand-lg navbar-dark">
+			
+			<button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			
+			<div class="collapse navbar-collapse" id="mainmenu">
+			
+				<ul class="navbar-nav mx-auto">
+				
+					<li class="nav-item">
+						<a class="nav-link" href="/mainmenu"><i class="icon-home"> Strona główna </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="/income"><i class="icon-money"> Dodaj przychód </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="/expense"><i class="icon-basket"> Dodaj wydatek </i></a>
+					</li>
+					
+					<li class="nav-item active">
+						<a class="nav-link" href="/balance"><i class="icon-chart-bar"> Przeglądaj bilans </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="#"><i class="icon-wrench"> Ustawienia </i></a>
+					</li>
+					
+					<li class="nav-item">
+						<a class="nav-link" href="/logout"><i class="icon-logout"> Wyloguj ({{ current_user.username }}) </i></a>
+					</li>
+					
+				</ul>
+			
+			</div>
+			
+		<div class="nav-item dropdown">
+			<button class="dropbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="submenu" aria-haspopup="true"> Wybierz okres </button>
+				
+				<div class="dropdown-content dropdown-menu m-0" aria-labelledby="submenu">
+				
+					<a class="dropdown-item" href="/balance"> Bieżący miesiąc </a>
+					<a class="dropdown-item" href="/poprzedni-miesiac"> Poprzedni miesiąc </a>
+					<a class="dropdown-item" href="/biezacy-rok"> Bieżący rok </a>
+					
+					<div class="dropdown-divider"></div>
+					
+					<a class="dropdown-item" href="#" data-toggle="modal" data-target="#chooseCustom"> Niestandardowy </a>
+				
+				</div>
+		</div>
+		
+	</nav>
+	
+	<main>
+		<article>
+			<div class="container">
+				<div class="row">
+					<div class="mx-auto text-center mb-4">
+						
+						<h2 class="font-weight-bold mt-4">{{ caption }}</h2>
+					</div>	
+					<div class="container">
+					
+						<div class="row">
+							<div class="col-md-6">
+								<table class="table table-sm table-striped table-info text-center">
+								
+									{% if incomes == NULL %}
+									
+										<thead><tr><th scope="col" colspan="3">Przychody</th></tr>
+										<tr><td>Brak przychodów w bieżącym miesiącu</td></tr></thead>
+										
+									{% else %}
+										
+										<thead><tr><th scope="col" colspan="3">Przychody</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th></tr></thead>
+										<tbody>
+										
+										{% set ordinalNumber = 0 %}
+										{% set totalIncome = 0 %}
+										
+										{% for income in incomes %}
+										
+											{% set ordinalNumber = ordinalNumber + 1 %}
+											{% set totalIncome = totalIncome + income[1] %}
+											
+											<tr><th scope="row"> {{ ordinalNumber }}</th>
+											<td>{{ income[0] }}</td><td>{{ income[1] }}</td></tr>
+											
+										{% endfor %}
+										
+										<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">{{ (totalIncome) | number_format(2) }}</td></tr>
+										</tbody>
+									
+									{% endif %}
+								
+								</table>
+							</div>
+								
+							<div class="col-md-6">
+								<table class="table table-sm table-striped table-secondary text-center">
+									
+									{% if expenses == NULL %}
+									
+										<thead><tr><th scope="col" colspan="3">Wydatki</th></tr>
+										<tr><td>Brak wydatków w bieżącym miesiącu</td></tr></thead>
+										
+									{% else %}
+										
+										<thead><tr><th scope="col" colspan="3">Wydatki</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th></tr></thead>
+										<tbody>
+										
+										{% set ordinalNumber = 0 %}
+										{% set totalExpense = 0 %}
+										
+										{% for expense in expenses %}
+										
+											{% set ordinalNumber = ordinalNumber + 1 %}
+											{% set totalExpense = totalExpense + expense[1] %}
+											
+											<tr><th scope="row"> {{ ordinalNumber }}</th>
+											<td>{{ expense[0] }}</td><td>{{ expense[1] }}</td></tr>
+											
+										{% endfor %}
+										
+										<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">{{ (totalExpense) | number_format(2) }}</td></tr>
+										</tbody>
+									
+									{% endif %}
+									
+								</table>
+							</div>
+						</div>
+								
+						<div class="row ">
+							<div class="col-md-8 offset-md-2">
+								
+								{% if ((incomes == NULL) and (expenses == NULL)) %} 
+									{% set balance = NULL %}
+								{% elseif ((incomes > NUll) and (expenses == NULL)) %}
+									{% set balance = (totalIncome - 0) | number_format(2) %}
+								{% elseif ((incomes == NUll) and (expenses > NULL)) %}
+									 {% set balance = (0 - totalExpense) | number_format(2)	%}						
+								{% else %}
+									{% set balance = (totalIncome - totalExpense) | number_format(2) %}
+								{% endif %}
+									
+								{% if balance == NULL %}
+									
+									
+								{% elseif balance > 0 %}
+									<table class="table table-sm table-striped table-success text-center">
+									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
+									<tr><th colspan="2">Gratulacje. Świetnie zarządzasz finansami!</th></tr></tbody>
+									</table>
+								{% elseif balance < 0 %}
+									<table class="table table-sm table-striped table-danger text-center">
+									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
+									<tr><th colspan="2">Uważaj wpadasz w długi!</th></tr></tbody>
+									</table>
+								{% elseif balance == 0 %}
+									<table class="table table-sm table-striped table-warning text-center">
+									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
+									<tr><th colspan="2">Twoje przychody i wydatki się równoważą!</th></tr></tbody>
+									</table>
+								{% endif %}
+								
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-12">
+								<table class="table table-sm table-striped table-info text-center">
+									
+								  </tbody>
+								</table>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<table class="table table-sm table-striped table-secondary text-center">
+								  
+								</table>
+							</div>
+						</div>
+						
+						<div class="row">
+						
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		
+		<section>
+			
+			<div class="modal fade" id="chooseCustom" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="staticBackdropLabel">Wskaż okres jaki Cię interesuje</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						
+						<form class="text-center" action="/niestandardowy" method="post">
+							<div class="modal-body">
+								
+								<div class="col mx-auto">
+									<div class="form-group form-inline mx-auto">
+										<span class="text-dark mr-3 font-weight-bold">Od:</span>
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="icon-calendar"></i></span>
+										</div>
+										<label class="sr-only">Data</label>
+										<input type="date" id="date1" name="date1" class="form-control col-sm-8" aria-label="Data" required>
+									</div>
+							
+									<div class="form-group form-inline mx-auto">
+										<span class="text-dark mr-3 font-weight-bold">Do:</span>
+										<div class="input-group-prepend">
+											<span class="input-group-text"><i class="icon-calendar"></i></span>
+										</div>
+										<label class="sr-only">Data</label>
+										<input type="date" id="date" name="date2" class="form-control col-sm-8" aria-label="Data" required>
+									</div>
+								</div>
+								
+							</div>
+							
+							<div class="modal-footer justify-content-center">
+								<button id="anulujModal" type="submit" class="btn btn-reset" data-dismiss="modal">Anuluj</button>
+								<button id="zatwierdz" type="submit" class="btn">Zatwierdź</button>
+							</div>
+						
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</section>
+	</main>
+	
+	<footer class="container-fluid p-3 mt-4 text-center text-white">
+		Wszelkie prawa zastrzeżone &copy; 2020
+	</footer>
+	
+	<script>
+		google.charts.load("current", {packages:["corechart"]});
+		google.charts.setOnLoadCallback(drawChart);
+
+		function drawChart() 
+		{
+			var data = google.visualization.arrayToDataTable 
+			([
+				['Kategoria', 'Kwota'],
+				<?php
+				foreach($expenses as $expense) {
+					echo "['".$expense[0]."', ".$expense[1]."],";
+				}
+				?>
+			]);
+
+			var options = 
+			{
+				title: 'Wydatki',
+				backgroundColor: 'none',
+				titleFontSize: 20,
+				legend: 'none',
+				width: '100%',
+				height: 500,
+				margin: 0,
+				padding: 0,
+				is3D: true,
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+			chart.draw(data, options);
+		}
+	</script>
+
+{% endblock %}
