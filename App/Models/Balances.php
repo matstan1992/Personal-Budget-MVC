@@ -23,6 +23,8 @@ class Balances extends \Core\Model
 	{
 		$arg['incomes'] = static::getIncomes($dateStart, $dateEnd);
 		$arg['expenses'] = static::getExpenses($dateStart, $dateEnd);
+		$arg['incomesDetails'] = static::getIncomesDetails($dateStart, $dateEnd);
+		$arg['expensesDetails'] = static::getExpensesDetails($dateStart, $dateEnd);
 		
 		return $arg;
 	}
@@ -75,6 +77,46 @@ class Balances extends \Core\Model
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($getExpenses);
+		
+		$stmt->bindValue(':dateStart', $dateStart, PDO::PARAM_STR);
+		$stmt->bindValue(':dateEnd', $dateEnd, PDO::PARAM_STR);
+		
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
+	
+	/**
+	 * Get incomes details from datebase (selected period)
+	 * @param string $dateStart, $dateEnd
+	 * @return array 
+	 */
+	private static function getIncomesDetails($dateStart, $dateEnd)
+	{
+		$getIncomesDetails = 'SELECT i.date_of_income, c.name, i.amount, i.income_comment FROM incomes i INNER JOIN incomes_category_assigned_to_users c ON i.income_category_assigned_to_user_id = c.id WHERE i.user_id = '.$_SESSION['user_id'].' AND i.date_of_income >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND i.date_of_income <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND i.user_id = '.$_SESSION['user_id'].' ORDER BY i.date_of_income';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($getIncomesDetails);
+		
+		$stmt->bindValue(':dateStart', $dateStart, PDO::PARAM_STR);
+		$stmt->bindValue(':dateEnd', $dateEnd, PDO::PARAM_STR);
+		
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+	}
+	
+	/**
+	 * Get expenses details from datebase (selected period)
+	 * @param string $dateStart, $dateEnd
+	 * @return array 
+	 */
+	private static function getExpensesDetails($dateStart, $dateEnd)
+	{
+		$getExpensesDetails = 'SELECT e.date_of_expense, c.name, p.name, e.amount, e.expense_comment FROM expenses e INNER JOIN expenses_category_assigned_to_users c ON expense_category_assigned_to_user_id = c.id INNER JOIN payment_methods_assigned_to_users p ON e.payment_method_assigned_to_user_id = p.id WHERE e.user_id = '.$_SESSION['user_id'].' AND e.date_of_expense >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND e.date_of_expense <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND e.user_id = '.$_SESSION['user_id'].' ORDER BY e.date_of_expense';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($getExpensesDetails);
 		
 		$stmt->bindValue(':dateStart', $dateStart, PDO::PARAM_STR);
 		$stmt->bindValue(':dateEnd', $dateEnd, PDO::PARAM_STR);
