@@ -253,7 +253,7 @@
 							{% if ((expenses == NULL) or (totalExpense == 0)) %}
 								
 							{% else %}
-								<div id="pieChart" class="mx-auto"></div>
+								<div id="chartContainer" style="height: 370px; width: 100%;"></div>
 							{% endif %}
 							
 						</div>
@@ -317,37 +317,32 @@
 		Wszelkie prawa zastrzeżone &copy; 2020
 	</footer>
 	
-	<script>
-		google.charts.load("current", {packages:["corechart"]});
-		google.charts.setOnLoadCallback(drawChart);
-
-		function drawChart() 
-		{
-			var data = google.visualization.arrayToDataTable 
-			([
-				['Kategoria', 'Kwota'],
+	<script type="text/javascript">
+		window.onload = function () {
+		 
+			var chart = new CanvasJS.Chart("chartContainer", {
 				
-				{% for expense in expenses %}
-					"['".{{ expense[0] }}."', ".{{ expense[1] }}."]"
-				{% endfor %}
-			]);
-
-			var options = 
-			{
-				title: 'Wydatki',
-				backgroundColor: 'none',
-				titleFontSize: 20,
-				legend: 'none',
-				width: '100%',
-				height: 500,
-				margin: 0,
-				padding: 0,
-				is3D: true,
-			};
-
-			var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-			chart.draw(data, options);
-		}
+				backgroundColor: false,
+				animationEnabled: true,
+				title: {
+					text: "Wydatki"
+				},
+				theme: "light2",
+				data: [{
+					type: "pie",
+					startAngle: 180,
+					yValueFormatString: "0.00 PLN",
+					indexLabel: "{label} {y}",
+					dataPoints: [
+						{% for value in expenses %}
+							{ label: {{ value[0]|json_encode()|raw }}, y: {{ value[1]|json_encode()|raw }} },
+						{% endfor %}
+					]
+				}]
+			});
+			chart.render();
+			 
+		};
 	</script>
 
 {% endblock %}
