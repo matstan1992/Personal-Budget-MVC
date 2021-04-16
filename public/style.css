@@ -1,7 +1,7 @@
 body
 {
 	/* Background pattern from Toptal Subtle Patterns */
-	background-image: url("img/tlo.png");
+	background-image: url("/css/img/tlo.png");
 	font-family: 'Lato', sans-serif;
 	margin: 0 !important;
 	padding: 0;
@@ -82,7 +82,8 @@ input[type=password]:focus
 	color: #0a2b42;
 }
 
-button[type=submit]
+button[type=submit],
+button[type=reset]
 {
 	background-color: #87CEFA;
 	font-size: 20px;
