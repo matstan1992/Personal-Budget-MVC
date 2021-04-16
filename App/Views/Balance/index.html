@@ -51,8 +51,7 @@
 			
 		<div class="nav-item dropdown">
 			<button class="dropbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="submenu" aria-haspopup="true"> Wybierz okres </button>
-				
-				<div class="dropdown-content dropdown-menu m-0" aria-labelledby="submenu">
+				<div class="dropdown-content dropdown-menu m-0" style="background-color: #87CEFA;" aria-labelledby="submenu">
 				
 					<a class="dropdown-item" href="/balance"> Bieżący miesiąc </a>
 					<a class="dropdown-item" href="/poprzedni-miesiac"> Poprzedni miesiąc </a>
@@ -72,6 +71,12 @@
 			<div class="container">
 				<div class="row">
 					<div class="mx-auto text-center mb-4">
+
+					{% for message in flash_messages %}
+						<div class="alert alert-{{ message.type }} text-center">
+							{{ message.body }}
+						</div>
+					{% endfor %}
 						
 						<h2 class="font-weight-bold mt-4">{{ caption }}</h2>
 					</div>	
@@ -84,7 +89,7 @@
 									{% if incomes == NULL %}
 									
 										<thead><tr><th scope="col" colspan="3">Przychody</th></tr>
-										<tr><td>Brak przychodów w bieżącym miesiącu</td></tr></thead>
+										<tr><td>Brak przychodów w tym okresie</td></tr></thead>
 										
 									{% else %}
 										
@@ -119,7 +124,7 @@
 									{% if expenses == NULL %}
 									
 										<thead><tr><th scope="col" colspan="3">Wydatki</th></tr>
-										<tr><td>Brak wydatków w bieżącym miesiącu</td></tr></thead>
+										<tr><td>Brak wydatków w tym okresie</td></tr></thead>
 										
 									{% else %}
 										
@@ -189,7 +194,30 @@
 							<div class="col-12">
 								<table class="table table-sm table-striped table-info text-center">
 									
-								  </tbody>
+									{% if incomesDetails == NULL %}
+									
+										<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>
+										<tr><td>Brak przychodów w tym okresie</td></tr></thead>
+										
+									{% else %}
+										
+										<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>
+										<tbody>
+										
+										{% set ordinalNumber = 0 %}
+										
+										{% for detail in incomesDetails %}
+										
+											{% set ordinalNumber = ordinalNumber + 1 %}
+											
+											<tr><th scope="row">{{ ordinalNumber }}</th>
+											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td></tr></tbody>
+											
+										{% endfor %}
+										
+									{% endif %}
+									
 								</table>
 							</div>
 						</div>
@@ -197,12 +225,42 @@
 							<div class="col-12">
 								<table class="table table-sm table-striped table-secondary text-center">
 								  
+								  {% if expensesDetails == NULL %}
+									
+										<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>
+										<tr><td>Brak wydatków w tym okresie</td></tr></thead>
+										
+									{% else %}
+										
+										<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Sposób płatności</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>
+										<tbody>
+										
+										{% set ordinalNumber = 0 %}
+										
+										{% for detail in expensesDetails %}
+										
+											{% set ordinalNumber = ordinalNumber + 1 %}
+											
+											<tr><th scope="row">{{ ordinalNumber }}</th>
+											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td><td>{{ detail[4] }}</td></tr></tbody>
+											
+										{% endfor %}
+										
+									{% endif %}
+								  
 								</table>
 							</div>
 						</div>
 						
 						<div class="row">
-						
+							
+							{% if ((expenses == NULL) or (totalExpense == 0)) %}
+								
+							{% else %}
+								<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+							{% endif %}
+							
 						</div>
 						
 					</div>
@@ -264,38 +322,32 @@
 		Wszelkie prawa zastrzeżone &copy; 2020
 	</footer>
 	
-	<script>
-		google.charts.load("current", {packages:["corechart"]});
-		google.charts.setOnLoadCallback(drawChart);
-
-		function drawChart() 
-		{
-			var data = google.visualization.arrayToDataTable 
-			([
-				['Kategoria', 'Kwota'],
-				<?php
-				foreach($expenses as $expense) {
-					echo "['".$expense[0]."', ".$expense[1]."],";
-				}
-				?>
-			]);
-
-			var options = 
-			{
-				title: 'Wydatki',
-				backgroundColor: 'none',
-				titleFontSize: 20,
-				legend: 'none',
-				width: '100%',
-				height: 500,
-				margin: 0,
-				padding: 0,
-				is3D: true,
-			};
-
-			var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-			chart.draw(data, options);
-		}
+	<script type="text/javascript">
+		window.onload = function () {
+		 
+			var chart = new CanvasJS.Chart("chartContainer", {
+				
+				backgroundColor: false,
+				animationEnabled: true,
+				title: {
+					text: "Wydatki"
+				},
+				theme: "light2",
+				data: [{
+					type: "pie",
+					startAngle: 180,
+					yValueFormatString: "0.00 PLN",
+					indexLabel: "{label} {y}",
+					dataPoints: [
+						{% for value in expenses %}
+							{ label: {{ value[0]|json_encode()|raw }}, y: {{ value[1]|json_encode()|raw }} },
+						{% endfor %}
+					]
+				}]
+			});
+			chart.render();
+			 
+		};
 	</script>
 
 {% endblock %}
