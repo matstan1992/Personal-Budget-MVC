@@ -26,6 +26,10 @@ class Balances extends \Core\Model
 		$arg['incomesDetails'] = static::getIncomesDetails($dateStart, $dateEnd);
 		$arg['expensesDetails'] = static::getExpensesDetails($dateStart, $dateEnd);
 		
+		$start = new DateTime($dateStart);
+		$end = new DateTime($dateEnd);
+		$arg['caption'] = 'Bilans za wybrany okres ('.$start->format('d/m/Y').' - '.$end->format('d/m/Y').')';
+		
 		return $arg;
 	}
 	
@@ -73,10 +77,10 @@ class Balances extends \Core\Model
 	{
 		$date = new DateTime();
 		$dateStart = $date->format('Y-01-01');
-		$dateEnd = $date->format('Y-12-t');
+		$dateEnd = $date->format('Y-m-t');
 		
 		$arg = static::getCustomPeriod($dateStart, $dateEnd);
-		$arg['caption'] = 'Bilans za bieżący rok ('.$date->format('01/01/Y').' - '.$date->format('t/12/Y').')';
+		$arg['caption'] = 'Bilans za bieżący rok ('.$date->format('01/01/Y').' - '.$date->format('t/m/Y').')';
 		
 		return $arg;
 	}
@@ -159,5 +163,58 @@ class Balances extends \Core\Model
 		$stmt->execute();
 
 		return $stmt->fetchAll();
+	}
+	
+	/**
+	 * Validation of dates entered in the form for custom period 
+	 * @return boolean True = success
+	 */
+	public static function validateDates()
+	{
+		if (isset($_POST['date1'])) {
+			$dateStart = new DateTime($_POST['date1']);
+			$dateEnd = new DateTime($_POST['date2']);
+			$lastDayOfTheMonth = date('Y-m-t');
+			$allGood = true;
+		
+			if ($dateStart == NULL) {
+				$allGood = false;
+				Flash::addMessage("Wybierz datę początku okresu", Flash::DANGER);
+			}
+					
+			if ($dateEnd == NULL) {
+				$allGood = false;
+				Flash::addMessage("Wybierz datę końca okresu", Flash::DANGER);
+			}				
+						
+			if ($dateStart->format('Y-m-d') > $lastDayOfTheMonth) {
+				$allGood = false;
+				Flash::addMessage("Data początku okresu nie może przekraczać daty ostatniego dnia bieżącego miesiąca", Flash::DANGER);
+			}
+						
+			if ($dateEnd->format('Y-m-d') > $lastDayOfTheMonth) {
+				$allGood = false;
+				Flash::addMessage("Data końca okresu nie może przekraczać daty ostatniego dnia bieżącego miesiąca", Flash::DANGER);
+			}
+			
+			if ($dateStart->format('Y-m-d') < '2000-01-01') {
+				$allGood = false;
+				Flash::addMessage("Minimalna data początku okresu to 01-01-2000", Flash::DANGER);
+			}	
+			
+			if ($dateEnd->format('Y-m-d') < '2000-01-01') {
+				$allGood = false;
+				Flash::addMessage("Minimalna data końca okresu to 01-01-2000", Flash::DANGER);
+			}
+			
+			if ($dateEnd!=NULL && $dateStart!=NULL) {
+				if($dateEnd < $dateStart) {
+					$allGood = false;
+					Flash::addMessage("Data końca okresu nie może być wcześniejsza od daty początku okresu", Flash::DANGER);
+				}
+			}
+		}
+		
+		return $allGood;
 	}
 }

@@ -44,4 +44,23 @@ class Balance extends Authenticated
 		$arg = Balances::getCurrentYear();
         View::renderTemplate('Balance/index.html', $arg);
 	}
+	
+	/**
+     * Display data for the custom period on the balance page
+     *
+     * @return void
+     */
+	public function customPeriodAction()
+	{
+		$arg = [];
+
+		if (Balances::validateDates()) {
+			
+			$dateStart = $_POST['date1'];
+			$dateEnd = $_POST['date2'];
+			$arg = Balances::getCustomPeriod($dateStart, $dateEnd);
+		}
+		
+        View::renderTemplate('Balance/index.html', $arg);
+	}
 }
