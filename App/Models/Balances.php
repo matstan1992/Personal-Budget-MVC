@@ -47,6 +47,41 @@ class Balances extends \Core\Model
 	}
 	
 	/**
+	 * Get previous month 
+	 * @param string $dateStart, $dateEnd
+	 * @return array 
+	 */ 
+	public static function getPreviousMonth()
+	{
+		$date = new DateTime();
+		$date->modify("-1 month");
+		$dateStart = $date->format('Y-m-01');
+		$dateEnd = $date->format('Y-m-t');
+		
+		$arg = static::getCustomPeriod($dateStart, $dateEnd);
+		$arg['caption'] = 'Bilans za poprzedni miesiąc ('.$date->format('01/m/Y').' - '.$date->format('t/m/Y').')';
+		
+		return $arg;
+	}
+	
+	/**
+	 * Get current year 
+	 * @param string $dateStart, $dateEnd
+	 * @return array 
+	 */ 
+	public static function getCurrentYear()
+	{
+		$date = new DateTime();
+		$dateStart = $date->format('Y-01-01');
+		$dateEnd = $date->format('Y-12-t');
+		
+		$arg = static::getCustomPeriod($dateStart, $dateEnd);
+		$arg['caption'] = 'Bilans za bieżący rok ('.$date->format('01/01/Y').' - '.$date->format('t/12/Y').')';
+		
+		return $arg;
+	}
+	
+	/**
 	 * Get incomes from datebase (selected period)
 	 * @param string $dateStart, $dateEnd
 	 * @return array 
