@@ -45,4 +45,11 @@ class Config
      * @var boolean
      */
     const SECRET_KEY = '7Ge6z9LUvObOAi3FkABgJgy1oZUMTagY';
+	
+	/**
+	* Set the mail sender 
+	*
+	* @var string 
+	*/
+	const EMAIL_FROM = 'your.personal.budget@gmail.com';
 }

@@ -37,7 +37,7 @@ class Expense extends Authenticated
 		$allGood = IncomeExpenseManager::saveExpense();
 		
 		if ($allGood) {
-			Flash::addMessage('Wydatek dodano pomyślenie!');
+			Flash::addMessage('Wydatek dodano pomyślnie!');
 			View::renderTemplate('MainMenu/index.html');
 		} else {
 		$arg['expensesCategories'] = IncomeExpenseManager::getExpensesCategories();

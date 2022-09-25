@@ -36,7 +36,7 @@ class Income extends Authenticated
 		$allGood = IncomeExpenseManager::saveIncome();
 		
 		if ($allGood) {
-			Flash::addMessage('Przychód dodano pomyślenie!');
+			Flash::addMessage('Przychód dodano pomyślnie!');
 			View::renderTemplate('MainMenu/index.html');
 		} else {
 		$arg['incomesCategories'] = IncomeExpenseManager::getIncomesCategories();

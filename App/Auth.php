@@ -25,7 +25,7 @@ class Auth
         session_regenerate_id(true);
 
         $_SESSION['user_id'] = $user->id;
-		
+	
 		if ($remember_me) {
 
             if ($user->rememberLogin()) {
@@ -63,7 +63,7 @@ class Auth
 
       // Finally destroy the session
       session_destroy();
-	  
+  
 	  static::forgetLogin();
     }
 

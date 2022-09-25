@@ -1,0 +1,77 @@
+{% extends "base.html" %} 
+
+{% block title %}Profil{% endblock %}
+
+{% block body %}
+
+<nav class="navbar mt-4 navbar-expand-lg navbar-dark">
+		
+		<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		
+		<div class="collapse navbar-collapse" id="mainmenu">
+		
+			<ul class="navbar-nav mx-auto">
+			
+				<li class="nav-item">
+					<a class="nav-link" href="/mainmenu"><i class="icon-home"> Strona główna </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/income"><i class="icon-money"> Dodaj przychód </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/expense"><i class="icon-basket"> Dodaj wydatek </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/balance"><i class="icon-chart-bar"> Przeglądaj bilans </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link active" href="/profile/show"><i class="icon-wrench"> Ustawienia </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/logout"><i class="icon-logout"> Wyloguj ({{ current_user.name }}) </i></a>
+				</li>
+				
+			</ul>
+		
+		</div>
+		
+	</nav>
+	
+	<main>
+		
+		<article>
+			<div class="container col-lg-7">
+				<div class="row">
+					<div class="mx-auto">
+						{% for message in flash_messages %}
+							<div class="alert alert-{{ message.type }} text-center">
+								{{ message.body }}
+							</div>
+						{% endfor %}
+						
+						<h1>Użytkownik</h1>
+
+						<dl>
+							<dt>Nazwa</dt>
+							<dd>{{ user.name }}</dd>
+							<dt>Adres e-mail</dt>
+							<dd>{{user.email }}</dd>
+						</dl>
+						
+						<a href="/profile/edit">Edytuj</a>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		
+	</main>
+	
+{% endblock %}

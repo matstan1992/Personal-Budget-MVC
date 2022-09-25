@@ -32,7 +32,7 @@ class Login extends \Core\Controller
      */
     public function createAction()
     {
-        $user = User::authenticate($_POST['email'], $_POST['password']);
+		$user = User::authenticate($_POST['email'], $_POST['password']);
 		
 		$remember_me = isset($_POST['remember_me']);
 
@@ -42,28 +42,28 @@ class Login extends \Core\Controller
 			
 			Flash::addMessage('Zalogowano pomyślnie');
 			
-            $this->redirect('/MainMenu/index');
-
-        } else {
+			$this->redirect('/MainMenu/index');
 			
-			Flash::addMessage('Niepoprawny email lub hasło', Flash::DANGER);
-
-            View::renderTemplate('Home/index.html', [
-                'email' => $_POST['email'],
+		} else {
+			
+			Flash::addMessage('Logowanie nieudane, spróbuj ponownie', Flash::WARNING);
+			
+			View::renderTemplate('Home/index.html', [
+				'email' => $_POST['email'],
 				'remember_me' => $remember_me
-            ]);
-        }
-    }
+			]);		
+		}
+	}
 	
 	/**
      * Log out a user
      *
      * @return void
      */
-    public function destroyAction()
+	public function destroyAction()
     {
         Auth::logout();
-		
+				
         $this->redirect('/login/show-logout-message');
     }
 	
