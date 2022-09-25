@@ -31,6 +31,7 @@ $router = new Core\Router();
 
 // Add the routes
 $router->add('', ['controller' => 'Home', 'action' => 'index']);
+$router->add('login', ['controller' => 'Home', 'action' => 'index']);
 $router->add('logout', ['controller' => 'Login', 'action' => 'destroy']);
 $router->add('mainmenu', ['controller' => 'MainMenu', 'action' => 'index']);
 $router->add('income', ['controller' => 'Income', 'action' => 'index']);
@@ -39,6 +40,8 @@ $router->add('balance', ['controller' => 'Balance', 'action' => 'index']);
 $router->add('poprzedni-miesiac', ['controller' => 'Balance', 'action' => 'previousMonth']);
 $router->add('biezacy-rok', ['controller' => 'Balance', 'action' => 'currentYear']);
 $router->add('niestandardowy', ['controller' => 'Balance', 'action' => 'customPeriod']);
+$router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
+$router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
 $router->add('{controller}/{action}');
     
 $router->dispatch($_SERVER['QUERY_STRING']);

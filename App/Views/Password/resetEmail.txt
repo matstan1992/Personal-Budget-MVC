@@ -1,0 +1,5 @@
+Zmiana hasła
+
+Kliknij poniższy link, aby zmienić hasło:
+
+{{ url }}

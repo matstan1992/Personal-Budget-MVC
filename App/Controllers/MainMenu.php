@@ -3,7 +3,8 @@
 namespace App\Controllers;
 
 use \Core\View;
-use App\Flash;
+//use \App\Auth;
+//use App\Flash;
 
 /**
  * MainMenu controller (example)
@@ -18,7 +19,7 @@ class MainMenu extends Authenticated
      * @return void
      */
     public function indexAction()
-    {
+    {	
         View::renderTemplate('MainMenu/index.html');
     }
 

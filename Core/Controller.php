@@ -97,11 +97,11 @@ abstract class Controller
     {
         if (! Auth::getUser()) {
 			
-			Flash::addMessage('Aby przejść dalej, proszę się zalogować', Flash::DANGER);
+			Flash::addMessage('Aby przejść dalej, proszę się zalogować', Flash::INFO);
 
             Auth::rememberRequestedPage();
 
-            $this->redirect('/');
+            $this->redirect('/login');
         }
     }
 }

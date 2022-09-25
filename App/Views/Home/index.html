@@ -2,77 +2,102 @@
 
 {% block title %}Zaloguj{% endblock %}
 
+{% block footer %}
+	<script>
+		$(document).ready(function() {
+		
+			/**
+			 * Validate the form 
+			 */
+			$('#formLogin').validate({
+				messages: {
+					password: {
+						required: 'To pole jest wymagane.'
+					},
+					email: {
+						required: 'To pole jest wymagane.',
+						email: 'Niepoprawny adres email.'
+					}
+				}
+			});
+			
+			
+			/**
+			 * Show password toggle button 
+			 */
+			 const passwordField = document.querySelector("#inputPassword");
+			const eyeIcon= document.querySelector("#eye");
+	  
+			eye.addEventListener("click", function(){
+			this.classList.toggle("fa-eye-slash");
+			const type = passwordField.getAttribute("type") === "password" ? "text" : "password";
+			passwordField.setAttribute("type", type);
+			});
+		});
+	</script>
+
+{% endblock %}
+
 {% block body %}
 
-        <header>
-			<div class="container mb-2 text-white text-center text-uppercase">
-				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
-				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
-			</div>
-		</header>
-	
-		<main>
-			<div class="container">
-				<div class="row m-0">
-					<section id="text" class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-ligh mt-4 mx-auto text-center">
-						<h3 class="h4 font-weight-bold">Kontrola budżetu? Tak!</h3>
-						<p class="mb-2"><b>Osobisty Menadżer Budżetu</b> jest to program stworzony z myślą o osobach, które kontrolują swoje fianse na papierze, bądź chcą dopiero zacząć. Jeśli męczy Cię już ciągłe spisywanie swoich przychodów i wydatków na kolejnych kartkach papieru, a pod koniec miesiąca i tak jest Ci ciężko oszacować czy w danym miesiącu jesteś na plusie czy na minusie, to ten program jest właśnie dla Ciebie! </p><p>Przecież niekontrolowane wydatki to przypuszczalne oszędności :-)</p>
+	<main>
+		<div class="container col-lg-7 text-center">
+			<div class="row m-0">
+				<section id="text" class="col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-ligh mt-4 mx-auto text-center">
+					<h3 class="fs-4 fw-bold">Kontrola budżetu? Tak!</h3>
+					<p class="mb-2"><b>Osobisty Menadżer Budżetu</b> jest to program stworzony z myślą o osobach, które kontrolują swoje fianse na papierze, bądź chcą dopiero zacząć. Jeśli męczy Cię już ciągłe spisywanie swoich przychodów i wydatków na kolejnych kartkach papieru, a pod koniec miesiąca i tak jest Ci ciężko oszacować czy w danym miesiącu jesteś na plusie czy na minusie, to ten program jest właśnie dla Ciebie! </p><p>Przecież niekontrolowane wydatki to przypuszczalne oszędności :-)</p>
 
-						<h3 class="h4 font-weight-bold">Jak to działa?</h3>
-						<p>Bardzo prosto. Logujemy się na swoje konto, a następnie z menu głównego wybieramy odpowiednią zakładkę. <br/>Chcąc dodać przychód do naszych finansów, wybieramy <b>"Dodaj przychód"</b>, zaznaczamy odpowiednią datę oraz rodzaj przychodu. <br/>Jeśli jest to wydatek klikamy <b>"Dodaj wydatek"</b> i wypełniamy analogicznie jak przy przychodzie. <br/>Natomiast, jeżeli interesuje nas zestawienie przychodów i rozchodów wybieramy <b>"Przeglądaj bilans"</b>. Tam korzystając z opcji wyboru daty możemy w prosty sposób dowiedzieć się czy w interesującym nas okresie nasze finanse są na plusie czy na minusie, no i przede wszystkim <b>ILE</b> ta kwota wynosi.</p> 
-					</section>
+					<h3 class="fs-4 fw-bold">Jak to działa?</h3>
+					<p>Bardzo prosto. Logujemy się na swoje konto, a następnie z menu głównego wybieramy odpowiednią zakładkę. <br/>Chcąc dodać przychód do naszych finansów, wybieramy <b>"Dodaj przychód"</b>, zaznaczamy odpowiednią datę oraz rodzaj przychodu. <br/>Jeśli jest to wydatek klikamy <b>"Dodaj wydatek"</b> i wypełniamy analogicznie jak przy przychodzie. <br/>Natomiast, jeżeli interesuje nas zestawienie przychodów i rozchodów wybieramy <b>"Przeglądaj bilans"</b>. Tam korzystając z opcji wyboru daty możemy w prosty sposób dowiedzieć się czy w interesującym nas okresie nasze finanse są na plusie czy na minusie, no i przede wszystkim <b>ILE</b> ta kwota wynosi.</p> 
+				</section>
+				
+				<section class="row content col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-white my-auto mx-auto">
+				
+					<div class="mx-auto mt-4 mb-2">			
+							<a href="/signup/new"><div class="noselected" style="width: 140px;"><h3 class="fs-5 fw-bold">Rejestracja</h3></div></a>
+							<div class="selected ms-2" style="width: 140px;"><h3 class="fs-5 fw-bold">Logowanie</h3></div>	
+					</div>
 					
-					<section class="row content col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-white my-auto mx-auto">
-					
-						<div class="mx-auto mt-4 mb-2">			
-								<a href="/signup/new"><div class="noselected mr-2" style="width: 140px;"><h3 class="h5 font-weight-bold">Rejestracja</h3></div></a>
-								<div class="selected" style="width: 140px;"><h3 class="h5 font-weight-bold">Logowanie</h3></div>	
-						</div>
+					<div class="col-sm-7 col-md-8 col-xl-10 col-xxl-8 mx-auto">
+						<form class="row mx-auto align-items-center" action="/login/create" method="post" id="formLogin">
 						
-						<form class="mx-auto mb-4" action="/login/create" method="post">
-						
-							<div class="row m-0 justify-content-center">
-								<div class="form-group form-inline">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="icon-mail"></i></span></div>
-										<label class="sr-only" for="inputEmail">E-mail</label>
-										<input class="form-control col-9" type="email" placeholder="Podaj e-mail" id="inputEmail" value="{{ email }}" required name="email">
-								</div>
+							<div class="input-group my-2 mx-auto">
+								<span class="input-group-text" id="addon-wrapping"><i class="icon-mail"></i></span>
+								<label class="visually-hidden" for="inputEmail">E-mail</label>
+								<input class="form-control" type="email" placeholder="Adres e-mail" id="inputEmail" name="email" value="{{ user.email }}" aria-label="Email" aria-describedby="addon-wrapping" required autofocus />
 							</div>
 							
-							<div class="row m-0 justify-content-center">
-								<div class="form-group form-inline">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="icon-lock"></i></span></div>
-										<label class="sr-only" for="inputPassword">Hasło</label>
-										<input class="form-control col-9" type="password" placeholder="Podaj hasło" id="inputPassword" required name="password">
-								</div>
+							<div class="input-group my-2 mx-auto">
+								<span class="input-group-text" id="addon-wrapping"><i class="icon-lock"></i></span>
+								<label class="visually-hidden" for="inputPassword">Hasło</label>
+								<input class="form-control" type="password" placeholder="Hasło" id="inputPassword" name="password" aria-label="Password" aria-describedby="addon-wrapping" required />
+								<span class="input-group-text position-absolute end-0" style="height: 40px; margin-right:-30px;"><i class="fa-solid fa-eye" id="eye" style="cursor: pointer;"></i></span>
 							</div>
-							<div>
-								<label>
-									<input type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} /> Zapamiętaj mnie
-								</label>
+							
+							<div class="mx-auto mb-3">
+								<div class="form-check">
+									<input class="form-check-input" id="inlineFormCheck" type="checkbox" name="remember_me" {% if remember_me %} checked="checked"{% endif %} />
+									<label class="form-check-label" for="inlineFormCheck">Zapamiętaj mnie</label>
+								</div>
 							</div>
 							
 							{% for message in flash_messages %}
-								<div class="text-center text-{{ message.type }}">
+								<div class="alert text-center alert-{{ message.type }}"> 
 									{{ message.body }}
 								</div>
 							{% endfor %}
 						
-							<div class="row">
-								<button type="submit" class="col-12">Zaloguj</button>
+							<div class="row mx-auto justify-content-center">
+								<button type="submit" style="width: 240px;">Zaloguj</button>
+								<div class="mx-auto mt-3 mb-0"><a href="/password/forgot">Zapomniałeś/aś hasła?</a></div>
 							</div>
 							
 						</form>
-						
-					</section>
-				</div>
+					</div>
+					
+				</section>
 			</div>
-		</main>
-	
-	<footer class="container-fluid p-3 mt-4 text-center text-white">
-		Wszelkie prawa zastrzeżone &copy; 2020
-	</footer>
-	
+		</div>
+	</main>
+
 {% endblock %}

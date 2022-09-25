@@ -3,54 +3,47 @@
 {% block title %}Bilans{% endblock %}
 
 {% block body %}
-
-	<header>
-			<div class="container text-white text-center text-uppercase">
-				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
-				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
-			</div>
-		</header>
 			
-		<nav class="navbar sticky mt-4 navbar-expand-lg navbar-dark">
+	<nav class="navbar mt-4 navbar-expand-lg navbar-dark">
+	
+		<button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		
+		<div class="collapse navbar-collapse" id="mainmenu">
+		
+			<ul class="navbar-nav mx-auto">
 			
-			<button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#mainmenu" aria-controls="mainmenu" aria-expanded="false" aria-label="Przełącznik nawigacji">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			
-			<div class="collapse navbar-collapse" id="mainmenu">
-			
-				<ul class="navbar-nav mx-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/mainmenu"><i class="icon-home"> Strona główna </i></a>
+				</li>
 				
-					<li class="nav-item">
-						<a class="nav-link" href="/mainmenu"><i class="icon-home"> Strona główna </i></a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="/income"><i class="icon-money"> Dodaj przychód </i></a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="/expense"><i class="icon-basket"> Dodaj wydatek </i></a>
-					</li>
-					
-					<li class="nav-item active">
-						<a class="nav-link" href="/balance"><i class="icon-chart-bar"> Przeglądaj bilans </i></a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="#"><i class="icon-wrench"> Ustawienia </i></a>
-					</li>
-					
-					<li class="nav-item">
-						<a class="nav-link" href="/logout"><i class="icon-logout"> Wyloguj ({{ current_user.username }}) </i></a>
-					</li>
-					
-				</ul>
+				<li class="nav-item">
+					<a class="nav-link" href="/income"><i class="icon-money"> Dodaj przychód </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/expense"><i class="icon-basket"> Dodaj wydatek </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link active" href="/balance"><i class="icon-chart-bar"> Przeglądaj bilans </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/profile/show"><i class="icon-wrench"> Ustawienia </i></a>
+				</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="/logout"><i class="icon-logout"> Wyloguj ({{ current_user.name }}) </i></a>
+				</li>
+				
+			</ul>
+		
+		</div>
 			
-			</div>
-			
-		<div class="nav-item dropdown">
-			<button class="dropbtn dropdown-toggle" data-toggle="dropdown" aria-expanded="false" id="submenu" aria-haspopup="true"> Wybierz okres </button>
+		<div class="nav-item dropdown me-4">
+			<button class="dropbtn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="submenu" aria-haspopup="true"> Wybierz okres </button>
 				<div class="dropdown-content dropdown-menu m-0" style="background-color: #87CEFA;" aria-labelledby="submenu">
 				
 					<a class="dropdown-item" href="/balance"> Bieżący miesiąc </a>
@@ -59,7 +52,7 @@
 					
 					<div class="dropdown-divider"></div>
 					
-					<a class="dropdown-item" href="#" data-toggle="modal" data-target="#chooseCustom"> Niestandardowy </a>
+					<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#chooseCustom"> Niestandardowy </a>
 				
 				</div>
 		</div>
@@ -68,7 +61,7 @@
 	
 	<main>
 		<article>
-			<div class="container">
+			<div class="container col-lg-7 text-center">
 				<div class="row">
 					<div class="mx-auto text-center mb-4">
 
@@ -78,13 +71,13 @@
 						</div>
 					{% endfor %}
 						
-						<h2 class="font-weight-bold mt-4">{{ caption }}</h2>
+						<h2 class="fw-bold mt-4">{{ caption }}</h2>
 					</div>	
 					<div class="container">
 					
 						<div class="row">
 							<div class="col-md-6">
-								<table class="table table-sm table-striped table-info text-center">
+								<table class="table table-sm table-striped table-info table-bordered border-info text-center">
 								
 									{% if incomes == NULL %}
 									
@@ -110,7 +103,7 @@
 											
 										{% endfor %}
 										
-										<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">{{ (totalIncome) | number_format(2) }}</td></tr>
+										<tr><th scope="col" colspan="2">Suma:</th><td class="fw-bold">{{ (totalIncome) | number_format(2) }}</td></tr>
 										</tbody>
 									
 									{% endif %}
@@ -119,7 +112,7 @@
 							</div>
 								
 							<div class="col-md-6">
-								<table class="table table-sm table-striped table-secondary text-center">
+								<table class="table table-sm table-striped table-secondary table-bordered border-secondary text-center">
 									
 									{% if expenses == NULL %}
 									
@@ -145,7 +138,7 @@
 											
 										{% endfor %}
 										
-										<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">{{ (totalExpense) | number_format(2) }}</td></tr>
+										<tr><th scope="col" colspan="2">Suma:</th><td class="fw-bold">{{ (totalExpense) | number_format(2) }}</td></tr>
 										</tbody>
 									
 									{% endif %}
@@ -161,7 +154,7 @@
 									{% set balance = NULL %}
 								{% elseif ((incomes > NUll) and (expenses == NULL)) %}
 									{% set balance = (totalIncome - 0) | number_format(2) %}
-								{% elseif ((incomes == NUll) and (expenses > NULL)) %}
+								{% elseif ((incomes == NULL) and (expenses > NULL)) %}
 									 {% set balance = (0 - totalExpense) | number_format(2)	%}						
 								{% else %}
 									{% set balance = (totalIncome - totalExpense) | number_format(2) %}
@@ -171,17 +164,17 @@
 									
 									
 								{% elseif balance > 0 %}
-									<table class="table table-sm table-striped table-success text-center">
+									<table class="table table-sm table-striped table-success table-bordered border-success text-center">
 									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
 									<tr><th colspan="2">Gratulacje. Świetnie zarządzasz finansami!</th></tr></tbody>
 									</table>
 								{% elseif balance < 0 %}
-									<table class="table table-sm table-striped table-danger text-center">
+									<table class="table table-sm table-striped table-danger table-bordered border-danger text-center">
 									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
 									<tr><th colspan="2">Uważaj wpadasz w długi!</th></tr></tbody>
 									</table>
 								{% elseif balance == 0 %}
-									<table class="table table-sm table-striped table-warning text-center">
+									<table class="table table-sm table-striped table-warning table-bordered border-warning text-center">
 									<tbody><tr><th>Bilans [zł]:</th><th> {{ balance }} </th></tr>
 									<tr><th colspan="2">Twoje przychody i wydatki się równoważą!</th></tr></tbody>
 									</table>
@@ -192,7 +185,7 @@
 						
 						<div class="row">
 							<div class="col-12">
-								<table class="table table-sm table-striped table-info text-center">
+								<table class="table table-sm table-striped table-info table-bordered border-info text-center">
 									
 									{% if incomesDetails == NULL %}
 									
@@ -223,7 +216,7 @@
 						</div>
 						<div class="row">
 							<div class="col-12">
-								<table class="table table-sm table-striped table-secondary text-center">
+								<table class="table table-sm table-striped table-secondary table-bordered border-secondary text-center">
 								  
 								  {% if expensesDetails == NULL %}
 									
@@ -270,12 +263,12 @@
 		
 		<section>
 			
-			<div class="modal fade" id="chooseCustom" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			<div class="modal fade" id="chooseCustom" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">Wskaż okres jaki Cię interesuje</h5>
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
@@ -284,21 +277,17 @@
 							<div class="modal-body">
 								
 								<div class="col mx-auto">
-									<div class="form-group form-inline mx-auto">
-										<span class="text-dark mr-3 font-weight-bold">Od:</span>
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="icon-calendar"></i></span>
-										</div>
-										<label class="sr-only">Data</label>
+									<div class="input-group mx-auto mb-3" style="width: 300px;">
+										<span class="text-dark my-auto mx-3 fw-bold">Od:</span>
+										<span class="input-group-text"><i class="icon-calendar"></i></span>
+										<label class="visually-hidden">Data</label>
 										<input type="date" id="date1" name="date1" class="form-control col-sm-8" aria-label="Data" required>
 									</div>
 							
-									<div class="form-group form-inline mx-auto">
-										<span class="text-dark mr-3 font-weight-bold">Do:</span>
-										<div class="input-group-prepend">
-											<span class="input-group-text"><i class="icon-calendar"></i></span>
-										</div>
-										<label class="sr-only">Data</label>
+									<div class="input-group mx-auto" style="width: 300px;">
+										<span class="text-dark my-auto mx-3 fw-bold">Do:</span>
+										<span class="input-group-text"><i class="icon-calendar"></i></span>
+										<label class="visually-hidden">Data</label>
 										<input type="date" id="date" name="date2" class="form-control col-sm-8" aria-label="Data" required>
 									</div>
 								</div>
@@ -306,8 +295,8 @@
 							</div>
 							
 							<div class="modal-footer justify-content-center">
-								<button id="anulujModal" type="submit" class="btn btn-reset" data-dismiss="modal">Anuluj</button>
-								<button id="zatwierdz" type="submit" class="btn">Zatwierdź</button>
+								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
 							</div>
 						
 						</form>
@@ -318,10 +307,7 @@
 		</section>
 	</main>
 	
-	<footer class="container-fluid p-3 mt-4 text-center text-white">
-		Wszelkie prawa zastrzeżone &copy; 2020
-	</footer>
-	
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	<script type="text/javascript">
 		window.onload = function () {
 		 
