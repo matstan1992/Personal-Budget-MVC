@@ -77,6 +77,12 @@
       "css": "smile",
       "code": 61720,
       "src": "fontawesome"
+    },
+    {
+      "uid": "9f498adcae624d612adc3123d65abf04",
+      "css": "credit-card",
+      "code": 59401,
+      "src": "typicons"
     }
   ]
 }
