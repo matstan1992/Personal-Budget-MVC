@@ -69,11 +69,17 @@
 								</div>
 								<div id="collapseOne" class="collapse" data-bs-parent="#accordion">
 									<div class="card-body">
+										<h5 class="fs-5 fw-bold">Obecnie posiadasz takie kategorie przychodów:</h5><br/>
 										{% for category in incomesCategories %}
 											<div class="py-1">
 												{{ category.name }}
 											</div>
 										{% endfor %}
+										
+										<span><a href="#"><button class="col p-2" id="dodaj">Dodaj kategorię</button></a></span>
+										<span><a href="#"><button class="col p-2" id="edytuj">Edytuj nazwę kategorii</button></a></span>
+										<span><a href="#"><button class="col p-2" id="kasuj">Usuń kategorię</button></a></span>
+										
 									</div>
 								</div>
 							</div>
@@ -86,11 +92,20 @@
 								</div>
 								<div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
 									<div class="card-body">
+										<h5 class="fs-5 fw-bold">Obecnie posiadasz takie kategorie wydatków:</h5><br/>
 										{% for category in expensesCategories %}
 											<div class="py-1">
 												{{ category.name }}
 											</div>
-										{% endfor %}
+										{% endfor %}	
+										
+										<div class="row row-cols-1 row-cols-md-2 m-0">
+											<span><a href="#"><button class="col p-2" id="dodaj">Dodaj kategorię</button></a></span>
+											<span><a href="#"><button class="col p-2" id="edytuj">Edytuj nazwę kategorii</button></a></span>
+											<span><a href="#"><button class="col p-2" id="edytuj">Ustaw limit kategorii</button></a></span>
+											<span><a href="#"><button class="col p-2" id="kasuj">Usuń kategorię</button></a></span>
+										</div>
+
 									</div>
 								</div>
 							</div>
@@ -103,11 +118,17 @@
 								</div>
 								<div id="collapseThree" class="collapse" data-bs-parent="#accordion">
 									<div class="card-body">
+										<h5 class="fs-5 fw-bold">Obecnie posiadasz takie sposoby płatności:</h5><br/>
 										{% for paymentMethod in paymentMethods %}
 											<div class="py-1">
 												{{ paymentMethod.name }}
 											</div>
 										{% endfor %}
+										
+										<span><a href="#"><button class="col p-2" id="dodaj">Dodaj kategorię</button></a></span>
+										<span><a href="#"><button class="col p-2" id="edytuj">Edytuj nazwę kategorii</button></a></span>
+										<span><a href="#"><button class="col p-2" id="kasuj">Usuń kategorię</button></a></span>
+										
 									</div>
 								</div>
 							</div>
@@ -126,15 +147,11 @@
 											<dt>Adres e-mail</dt>
 											<dd>{{user.email }}</dd>
 										</dl>
-										
-											<div class="row row-cols-1 row-cols-md-2 m-0">
-												<button class="col p-2" type="submit"><a href="/profile/edit">Edytuj moje dane</a></button>
-												<button class="col p-2" type="submit"><a href="/profile/edit">Edytuj moje dane</a></button>
-												<button class="col p-2" type="submit"><a href="/profile/edit">Edytuj moje dane</a></button>
-												<button class="col p-2" type="submit"><a href="/profile/edit">Edytuj moje dane</a></button>
-											</div>
-									
-										
+																	
+										<span><a href="/profile/edit"><button class="col p-2" id="edytuj">Edytuj dane lub hasło</button></a></span>
+										<span><a href="#"><button class="col p-2" id="kasuj">Usuń przychody i wydatki</button></a></span>
+										<span><a href="#"><button class="col p-2" id="kasuj1">Usuń moje konto</button></a></span>
+
 									</div>
 								</div>
 							</div>
