@@ -83,6 +83,18 @@
       "css": "credit-card",
       "code": 59401,
       "src": "typicons"
+    },
+    {
+      "uid": "587bjlxppui6u4japooa2foe58rsvicp",
+      "css": "pencil",
+      "code": 59403,
+      "src": "modernpics"
+    },
+    {
+      "uid": "2cc73cc335f054682c04fe63439c4dcb",
+      "css": "trash",
+      "code": 59405,
+      "src": "linecons"
     }
   ]
 }

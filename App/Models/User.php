@@ -106,6 +106,9 @@ class User extends \Core\Model
         if ($this->name == '') {
             $this->errors[] = 'Nazwa użytkownika jest wymagana.';
         }
+		
+		//First letter uppercase, the rest lowercase
+		$this->name = mb_convert_case($this->name, MB_CASE_TITLE, "UTF-8");
 
         // email address
         if (filter_var($this->email, FILTER_VALIDATE_EMAIL) === false) {

@@ -41,6 +41,63 @@ class Settings extends Authenticated
 		View::renderTemplate('Settings/index.html', $arg);
 	}
 	
+	public function addNewIncomeCategory()
+	{
+		if (isset($_POST['newIncomeCategory'])) {
+			$incomeCategory = new IncomeExpenseManager($_POST);
+			
+			if ($incomeCategory->addNewIncomeCategory()) {
+				
+				Flash::addMessage('Nowa kategoria przychodów została dodana pomyślnie!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
+	public function addNewExpenseCategory()
+	{
+		if (isset($_POST['newExpenseCategory'])) {
+			$expenseCategory = new IncomeExpenseManager($_POST);
+			
+			if ($expenseCategory->addNewExpenseCategory()) {
+				
+				Flash::addMessage('Nowa kategoria wydatków została dodana pomyślnie!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
+	public function addNewPaymentMethod()
+	{
+		if (isset($_POST['newPaymentMethod'])) {
+			$paymentMethod = new IncomeExpenseManager($_POST);
+			
+			if ($paymentMethod->addNewPaymentMethod()) {
+				
+				Flash::addMessage('Nowa metoda płatności została dodana pomyślnie!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
 	/**
 	 * Show the form for editing the profile 
 	 * 
