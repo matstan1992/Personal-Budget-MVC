@@ -60,6 +60,25 @@ class Settings extends Authenticated
 		
 	}
 	
+	public function updateIncomeCategory()
+	{
+		if (isset($_POST['incomeCategory'])) {
+			$incomeCategory = new IncomeExpenseManager($_POST);
+			
+			if ($incomeCategory->updateIncomeCategory()) {
+				
+				Flash::addMessage('Kategoria przychodów została zedytowana!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
 	public function addNewExpenseCategory()
 	{
 		if (isset($_POST['newExpenseCategory'])) {
@@ -79,6 +98,25 @@ class Settings extends Authenticated
 		
 	}
 	
+	public function updateExpenseCategory()
+	{
+		if (isset($_POST['expenseCategory'])) {
+			$expenseCategory = new IncomeExpenseManager($_POST);
+			
+			if ($expenseCategory->updateExpenseCategory()) {
+				
+				Flash::addMessage('Kategoria wydatków została zedytowana!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
 	public function addNewPaymentMethod()
 	{
 		if (isset($_POST['newPaymentMethod'])) {
@@ -87,6 +125,25 @@ class Settings extends Authenticated
 			if ($paymentMethod->addNewPaymentMethod()) {
 				
 				Flash::addMessage('Nowa metoda płatności została dodana pomyślnie!');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+		
+	}
+	
+	public function updatePaymentMethod()
+	{
+		if (isset($_POST['paymentMethod'])) {
+			$paymentMethod = new IncomeExpenseManager($_POST);
+			
+			if ($paymentMethod->updatePaymentMethod()) {
+				
+				Flash::addMessage('Sposób płatności został zedytowany!');
 				$this->redirect('/settings/index');
 				
 			} else {		

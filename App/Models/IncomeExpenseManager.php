@@ -215,7 +215,7 @@ class IncomeExpenseManager extends \Core\Model
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		if(count($result) == 1) {
+		if (count($result) == 1) {
 			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
 			$allGood = false;
 		}
@@ -237,6 +237,50 @@ class IncomeExpenseManager extends \Core\Model
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 
             return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public function updateIncomeCategory()
+	{
+		$allGood = true;
+		
+		$_POST['incomeCategory'] = ucfirst($_POST['incomeCategory']);
+		
+		if (strlen($_POST['incomeCategory']) < 1 || strlen($_POST['incomeCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['incomeCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $_POST['incomeCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE incomes_category_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $_POST['incomeCategoryId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['incomeCategory'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
 		}
 		
 		return false;
@@ -292,6 +336,50 @@ class IncomeExpenseManager extends \Core\Model
 		return false;
 	}
 	
+	public function updateExpenseCategory()
+	{
+		$allGood = true;
+		
+		$_POST['expenseCategory'] = ucfirst($_POST['expenseCategory']);
+		
+		if (strlen($_POST['expenseCategory']) < 1 || strlen($_POST['expenseCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM expenses_category_assigned_to_users WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseName', $_POST['expenseCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE expenses_category_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['expenseCategory'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
+		}
+		
+		return false;
+	}	
+	
 	protected function validateNewPaymentMethodName()
 	{	
 		$allGood = true;
@@ -315,7 +403,7 @@ class IncomeExpenseManager extends \Core\Model
 		$stmt->execute();
 		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 		
-		if(count($result) == 1) {
+		if (count($result) == 1) {
 			Flash::addMessage('Podany sposób płatności już istnieje!', Flash::DANGER);
 			$allGood = false;
 		}
@@ -337,6 +425,50 @@ class IncomeExpenseManager extends \Core\Model
             $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 
             return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public function updatePaymentMethod()
+	{
+		$allGood = true;
+		
+		$_POST['paymentMethod'] = ucfirst($_POST['paymentMethod']);
+		
+		if (strlen($_POST['paymentMethod']) < 1 || strlen($_POST['paymentMethod']) > 40) {
+			Flash::addMessage('Nazwa sposobu płatności musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :paymentName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['paymentMethodId'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentName', $_POST['paymentMethod'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podany sposób płatności już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE payment_methods_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $_POST['paymentMethodId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['paymentMethod'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
 		}
 		
 		return false;
