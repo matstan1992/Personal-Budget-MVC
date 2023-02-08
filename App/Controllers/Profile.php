@@ -33,9 +33,7 @@ class Profile extends Authenticated
 	 */ 
 	public function showAction()
 	{
-		View::renderTemplate('Profile/show.html', [
-			'user' => $this->user
-		]);
+		View::renderTemplate('Settings/index.html');
 	}
 	
 	/**
@@ -62,7 +60,7 @@ class Profile extends Authenticated
 			
 			Flash::addMessage('Zmiany zapisano pomyślnie');
 			
-			$this->redirect('/profile/show');
+			$this->redirect('/settings');
 			
 		} else {
 			

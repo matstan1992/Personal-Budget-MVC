@@ -13,6 +13,16 @@ use \App\Date;
  */
 class IncomeExpenseManager extends \Core\Model
 {	
+
+	public $errors = [];
+
+    public function __construct($data = [])
+    {
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        };
+    }
+
 	/**
 	 * Get categories of incomes from database 
 	 * 
@@ -70,14 +80,14 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (isset($_SESSION['user_id'])) {
 						
-			$sql = "SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
+			$sql = "SELECT id, name, category_limit FROM expenses_category_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
 			
 			$stmt->execute();
 
-			return $stmt->fetchAll();
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 	
@@ -182,4 +192,348 @@ class IncomeExpenseManager extends \Core\Model
 		return $allGood;
 	}
 	
+	protected function validateNewIncomeCategoryName()
+	{	
+		$allGood = true;
+		
+		//First letter uppercase, the rest lowercase
+		$_POST['newIncomeCategory'] = ucfirst($_POST['newIncomeCategory']);
+		
+		if (strlen($_POST['newIncomeCategory']) < 1 || strlen($_POST['newIncomeCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND name = :incomeName";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $_POST['newIncomeCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		return $allGood;
+	}
+	
+	public function addNewIncomeCategory()
+	{
+		if (static::validateNewIncomeCategoryName()) {
+			
+			$sql = "INSERT INTO incomes_category_assigned_to_users (id, user_id, name) 
+			VALUES ('NULL', :user_id, :name)";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $_POST['newIncomeCategory'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public function updateIncomeCategory()
+	{
+		$allGood = true;
+		
+		$_POST['incomeCategory'] = ucfirst($_POST['incomeCategory']);
+		
+		if (strlen($_POST['incomeCategory']) < 1 || strlen($_POST['incomeCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM incomes_category_assigned_to_users WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['incomeCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeName', $_POST['incomeCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE incomes_category_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $_POST['incomeCategoryId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['incomeCategory'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	protected function validateNewExpenseCategoryName()
+	{	
+		$allGood = true;
+		
+		//First letter uppercase, the rest lowercase
+		$_POST['newExpenseCategory'] = ucfirst($_POST['newExpenseCategory']);
+		
+		if (strlen($_POST['newExpenseCategory']) < 1 || strlen($_POST['newExpenseCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM expenses_category_assigned_to_users WHERE user_id = :user_id AND name = :expenseName";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseName', $_POST['newExpenseCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if(count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		return $allGood;
+	}
+	
+	public function addNewExpenseCategory()
+	{
+		if (static::validateNewExpenseCategoryName()) {
+			
+			$sql = "INSERT INTO expenses_category_assigned_to_users (id, user_id, name) 
+			VALUES ('NULL', :user_id, :name)";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $_POST['newExpenseCategory'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public function updateExpenseCategory()
+	{
+		$allGood = true;
+		
+		$_POST['expenseCategory'] = ucfirst($_POST['expenseCategory']);
+		
+		if (strlen($_POST['expenseCategory']) < 1 || strlen($_POST['expenseCategory']) > 40) {
+			Flash::addMessage('Nazwa kategorii musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM expenses_category_assigned_to_users WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseName', $_POST['expenseCategory'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podana kategoria już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE expenses_category_assigned_to_users SET name = :name, category_limit = :limit WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			if (strpos($_POST['limit'], ",") == true) {
+				$_POST['limit'] = str_replace(",", ".", $_POST['limit']);
+			}
+		
+			if ($_POST['limit'] == "") {
+				$stmt->bindValue(':limit', NULL, PDO::PARAM_STR);
+			} else {
+				$stmt->bindValue(':limit', $_POST['limit'], PDO::PARAM_STR);
+			}
+			
+			
+			$stmt->bindValue(':id', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['expenseCategory'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
+		}
+		
+		return false;
+	}	
+	
+	protected function validateNewPaymentMethodName()
+	{	
+		$allGood = true;
+		
+		//First letter uppercase, the rest lowercase
+		$_POST['newPaymentMethod'] = ucfirst($_POST['newPaymentMethod']);
+		
+		if (strlen($_POST['newPaymentMethod']) < 1 || strlen($_POST['newPaymentMethod']) > 40) {
+			Flash::addMessage('Nazwa sposobu płatności musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :paymentName";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentName', $_POST['newPaymentMethod'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podany sposób płatności już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		return $allGood;
+	}
+	
+	public function addNewPaymentMethod()
+	{
+		if (static::validateNewPaymentMethodName()) {
+			
+			$sql = "INSERT INTO payment_methods_assigned_to_users (id, user_id, name) 
+			VALUES ('NULL', :user_id, :name)";
+			
+			$db = static::getDB();
+            $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':name', $_POST['newPaymentMethod'], PDO::PARAM_STR);
+            $stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+
+            return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public function updatePaymentMethod()
+	{
+		$allGood = true;
+		
+		$_POST['paymentMethod'] = ucfirst($_POST['paymentMethod']);
+		
+		if (strlen($_POST['paymentMethod']) < 1 || strlen($_POST['paymentMethod']) > 40) {
+			Flash::addMessage('Nazwa sposobu płatności musi zawierać od 1 do 40 znaków!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		$sql = "SELECT * FROM payment_methods_assigned_to_users WHERE user_id = :user_id AND name = :paymentName AND id <> :id";
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':id', $_POST['paymentMethodId'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentName', $_POST['paymentMethod'], PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		if (count($result) == 1) {
+			Flash::addMessage('Podany sposób płatności już istnieje!', Flash::DANGER);
+			$allGood = false;
+		}
+		
+		if ($allGood == true)
+		{
+			$sql = "UPDATE payment_methods_assigned_to_users SET name = :name WHERE id = :id";
+			
+			$db = static::getDB();
+			$stmt = $db->prepare($sql);
+			
+			$stmt->bindValue(':id', $_POST['paymentMethodId'], PDO::PARAM_INT);
+			$stmt->bindValue(':name', $_POST['paymentMethod'], PDO::PARAM_STR);
+			
+			return $stmt->execute();
+		}
+		
+		return false;
+	}
+	
+	public static function getLimit($id) 
+	{
+		$sql = 'SELECT * FROM expenses_category_assigned_to_users WHERE id = :categoryId AND user_id = :user_id';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':categoryId', $id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		$expenseArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $expenseArray;
+	}
+	
+	public static function findStartAndEndDate($date)
+	{
+		list($year, $month, $day) = explode("-", $date);
+		$numberOfDaysOfTheMonth = date("t");
+		
+		$startDate = date("Y-m-d", mktime(0, 0, 0, $month, "01", $year));
+		$endDate = date("Y-m-d", mktime(0, 0, 0, $month, $numberOfDaysOfTheMonth, $year));
+		
+		$dates = [$startDate, $endDate];
+		
+		return $dates;
+	}
+	
+	public static function getMonthlyExpenses($id, $date, $dates)
+	{
+		$startDate = $dates[0];
+		$endDate = $dates[1];
+		
+		$sql = 'SELECT exd.name, ex.date_of_expense, ex.amount 
+					FROM expenses ex, expenses_category_assigned_to_users exd 
+					WHERE ex.user_id = :user_id AND exd.id = :categoryId AND ex.date_of_expense >= :startDate AND ex.date_of_expense <= :endDate AND exd.user_id = ex.user_id AND exd.id = ex.expense_category_assigned_to_user_id';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':categoryId', $id, PDO::PARAM_INT);
+		$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+		$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$expenseArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $expenseArray;
+	}
 }

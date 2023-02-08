@@ -77,6 +77,24 @@
       "css": "smile",
       "code": 61720,
       "src": "fontawesome"
+    },
+    {
+      "uid": "9f498adcae624d612adc3123d65abf04",
+      "css": "credit-card",
+      "code": 59401,
+      "src": "typicons"
+    },
+    {
+      "uid": "587bjlxppui6u4japooa2foe58rsvicp",
+      "css": "pencil",
+      "code": 59403,
+      "src": "modernpics"
+    },
+    {
+      "uid": "2cc73cc335f054682c04fe63439c4dcb",
+      "css": "trash",
+      "code": 59405,
+      "src": "linecons"
     }
   ]
 }

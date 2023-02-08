@@ -31,7 +31,7 @@
 				</li>
 				
 				<li class="nav-item">
-					<a class="nav-link" href="/profile/show"><i class="icon-wrench"> Ustawienia </i></a>
+					<a class="nav-link" href="/settings"><i class="icon-wrench"> Ustawienia </i></a>
 				</li>
 				
 				<li class="nav-item">
@@ -268,9 +268,7 @@
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="staticBackdropLabel">Wskaż okres jaki Cię interesuje</h5>
-							<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-							</button>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						
 						<form class="text-center" action="/niestandardowy" method="post">
@@ -307,7 +305,8 @@
 		</section>
 	</main>
 	
-	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js">
+	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<script type="text/javascript">
 		window.onload = function () {
 		 
 			var chart = new CanvasJS.Chart("chartContainer", {

@@ -83,7 +83,8 @@ input[type=password]:focus
 }
 
 button[type=submit],
-button[type=reset]
+button[type=reset],
+.button
 {
 	background-color: #87CEFA;
 	font-size: 20px;
@@ -95,6 +96,7 @@ button[type=reset]
 	cursor: pointer;
 	letter-spacing: 2px;
 	outline: none;
+	text-decoration: none;
 }
 
 button[type=submit]:focus,
@@ -191,6 +193,11 @@ footer
 	width: 250px;
 }
 
+.limit
+{
+    display: none;
+}
+
 textarea,
 input[type=number], 
 input[type=date]
@@ -250,6 +257,62 @@ textarea
 	margin: 5px;
 	padding: 8px;
 }
+
+#edytuj,
+#kasuj,
+#kasuj1,
+#dodaj
+{
+	width: 265px;
+	background-color: #E4A11B;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	letter-spacing: 2px;
+	outline: none;
+	margin: 5px;
+	padding: 8px;
+}
+
+#kasuj
+{
+	background-color: #DC4C64;
+}
+
+#kasuj:hover
+{
+	background-color: #CB3B53;
+	color: #fff;
+}
+
+#kasuj1
+{
+	background-color: #C62828;
+}
+
+#kasuj1:hover
+{
+	background-color: #B71C1C;
+	color: #fff;
+}
+
+#edytuj:hover
+{
+	background-color: #D3A00A;
+	color: #fff;
+}
+
+#dodaj
+{
+	background-color: #14A44D;
+}
+
+#dodaj:hover
+{
+	background-color: #129345;
+	color: #fff;
+}
+
 /*Przeglądaj bilans - Dropdown */
 .dropbtn 
 {

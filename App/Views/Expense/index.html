@@ -31,7 +31,7 @@
 				</li>
 				
 				<li class="nav-item">
-					<a class="nav-link" href="/profile/show"><i class="icon-wrench"> Ustawienia </i></a>
+					<a class="nav-link" href="/settings"><i class="icon-wrench"> Ustawienia </i></a>
 				</li>
 				
 				<li class="nav-item">
@@ -48,7 +48,16 @@
 		
 		<article>
 			<div class="container col-lg-7 text-center">
-				<div class="row">
+			
+				<div class="row mb-0">
+					<div class="bg-light p-2 mt-3 limit" id="limit">
+							Limit: <span id="limitInfo"></span> zł <br>
+							Dotychczas wydano: <span id="monthlySpendInfo"></span> zł
+							<p class="mt-2 mb-0" id="resultInfo"></p>
+					</div>
+				</div>
+			
+				<div class="row mb-0">
 					<div class="mx-auto">
 						{% for message in flash_messages %}
 							<div class="alert alert-{{ message.type }} text-center">
@@ -56,49 +65,43 @@
 							</div>
 						{% endfor %}
 						<form class="text-center" method="post" action="/Expense/new">
-							<h2 class="fw-bold mt-4">Dodaj wydatek</h2>
-
+							<h2 class="fw-bold mt-3">Dodaj wydatek</h2>
 	
-							<div class="input-group mx-auto mb-2 mt-4" style="width: 350px;">
-								<span class="input-group-text"><i class="icon-money-1"></i></span>
-								<label class="visually-hidden">Kwota</label>
-								<input class="form-control" type="number" name="amount" min="0" max="999999.99" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required autofocus value="{{ amount }}">
-							</div>
-						
-							<div class="input-group mx-auto mb-2 mt-4" style="width: 350px;">
-								<span class="input-group-text"><i class="icon-calendar"></i></span>
-								<label class="visually-hidden">Data</label>
-								<input class="form-control" type="date" id="date" name="date" aria-label="Data" required value="{{ date }}">
+							<div class="col-4 mx-auto">
+								<div class="input-group mx-auto mb-2 mt-3">
+									<span class="input-group-text"><i class="icon-money-1"></i></span>
+									<label class="visually-hidden">Kwota</label>
+									<input class="form-control" id="amount" type="number" name="amount" min="0" max="999999.99" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required autofocus value="{{ amount }}">
+								</div>
 							</div>
 							
-							<fieldset class="mx-auto mt-3">
+							<div class="col-4 mx-auto">
+								<div class="input-group mx-auto mb-2 mt-3">
+									<span class="input-group-text"><i class="icon-calendar"></i></span>
+									<label class="visually-hidden">Data</label>
+									<input class="form-control" type="date" id="date" name="date" aria-label="Data" required value="{{ date }}">
+								</div>
+							</div>
+							
+							<legend class="fw-bold">Sposób płatności:</legend>
+							<div class=" col-4 mx-auto mb-2">
+								<select class="form-select" aria-label="Default select example" name="paymentMethod" id="paymentMethod">
+									{% for paymentMethod in paymentMethods %}
+									<option value="{{paymentMethod.id}}">{{paymentMethod.name}}</option>
+									{% endfor %}
+								</select>
+							</div>				
 								
-								<legend class="fw-bold">Sposób płatności:</legend>
-								
-								{% for paymentMethod in paymentMethods %}
-									<div class="d-block mb-2">
-										<input type="radio" name="paymentMethod" id="paymentMethod{{ paymentMethod.id }}" 
-										value="{{ paymentMethod.id }}" required>
-										<label for="paymentMethod{{ paymentMethod.id }}"> {{ paymentMethod.name }} </label>
-									</div>
-								{% endfor %}
+							<legend class="fw-bold">Kategoria:</legend>
+							<div class=" col-4 mx-auto mb-2">
+								<select class="form-select" aria-label="Default select example" name="category" id="category">
+									{% for category in expensesCategories %}
+									<option value="{{category.id}}">{{category.name}}</option>
+									{% endfor %}
+								</select>
+							</div>
 
-							</fieldset>
-
-							<fieldset class="mx-auto mt-3">
-								
-								<legend class="fw-bold">Kategoria:</legend>
-								
-								{% for category in expensesCategories %}
-									<div class="column col-sm-4 py-2" style="width: 270px;">
-										<input type="radio" name="category" id="category{{ category.id }}" value="{{ category.id }}" required>
-										<label for="category{{ category.id }}"> {{ category.name }} </label>
-									</div>
-								{% endfor %}
-								
-							</fieldset>
-
-							<div class="mx-auto mt-3 mb-1">
+							<div class="mx-auto mt-3">
 								<legend class="fw-bold">Komentarz (opcjonalnie):</legend>
 								<textarea name="comment" class="col-9" rows="2" cols="50" style="resize: none;">{{ comment }}</textarea>
 							</div>
@@ -114,5 +117,7 @@
 		</article>
 		
 	</main>
+	
+	<script src="/js/showLimit.js"></script>
 
 {% endblock %}
