@@ -43,6 +43,10 @@ $router->add('biezacy-rok', ['controller' => 'Balance', 'action' => 'currentYear
 $router->add('niestandardowy', ['controller' => 'Balance', 'action' => 'customPeriod']);
 $router->add('password/reset/{token:[\da-f]+}', ['controller' => 'Password', 'action' => 'reset']);
 $router->add('signup/activate/{token:[\da-f]+}', ['controller' => 'Signup', 'action' => 'activate']);
+
+$router->add('expense/getCategoryLimit/{id:[\d]+}', ['controller' => 'Expense', 'action' => 'getCategoryLimit']);
+$router->add('expense/getExpensesDate/{id:[\d]+}/{date:(19|20|21)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])}', ['controller' => 'Expense', 'action' => 'getExpensesDate']);
+
 $router->add('{controller}/{action}');
     
 $router->dispatch($_SERVER['QUERY_STRING']);

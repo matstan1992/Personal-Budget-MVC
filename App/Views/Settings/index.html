@@ -28,7 +28,8 @@
 				}).get();
 				
 				$('#expenseCategoryModal').val(data[0]);
-				$('#expenseCategoryIdModal').val(data[3]);
+				$('#expenseLimit').val(data[1]);
+				$('#expenseCategoryIdModal').val(data[4]);
 			
 			});
 			
@@ -204,10 +205,19 @@
 									<div class="card-body">
 										<h5 class="fs-5 fw-bold">Obecnie posiadasz takie kategorie wydatków:</h5><br/>
 										<table class="table table-hover table-sm table-left">
-							
+											
+											<thead>	
+												<tr>
+												<th scope="col" style="visibility: hidden;">Kategoria</th>
+												<th scope="col">Limit</th>
+												<th scope="col"></th>
+												<th scope="col"></th>
+												<th scope="col" style="display:none;">ID</th></tr>
+											</thead>
 											<tbody>
 												{% for category in expensesCategories %}
 												<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
+												<td>{{ category.category_limit }}</td>
 												<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editExpenseBtn" data-bs-toggle="modal" data-bs-target="#editExpenseCategoryModal"></i></td>
 												<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
 												<td style="display:none;">{{ category.id }}</td></tr>
@@ -257,10 +267,17 @@
 											<div class="modal-body">
 
 												<input type="hidden" id="expenseCategoryIdModal" name="expenseCategoryId">
-												<div class="input-group">
+												<div class="input-group mb-3">
 													<span class="input-group-text"><i class="icon-money"></i></span>
 													<input type="text" class="form-control" id="expenseCategoryModal" placeholder="Kategoria wydatków" maxlength="40" step="any" aria-label="KategoriaWydatku" name="expenseCategory" required>
 												</div>
+												
+												<label>Ustaw limit (opcjonalnie)</label>
+												<div class="input-group">
+													<span class="input-group-text"><i class="fas fa-angle-double-up"></i></span>
+													<input class="form-control" type="number" id="expenseLimit" name="limit" min="0" max="999999.99" step="0.01" placeholder="Ustaw limit" aria-label="LimitKategorii">
+												</div>
+												<small class="text-muted">Pozostaw puste, by pozbyć się limitu.</small>
 
 											</div>
 											<div class="modal-footer justify-content-center">
@@ -282,7 +299,14 @@
 									<div class="card-body">
 										<h5 class="fs-5 fw-bold">Obecnie posiadasz takie sposoby płatności:</h5><br/>
 										<table class="table table-hover table-sm table-left">
-							
+											
+											<thead>	
+												<tr>
+												<th scope="col" style="display:none;">Kategoria</th>
+												<th scope="col"></th>
+												<th scope="col"></th>
+												<th scope="col" style="display:none;">ID</th></tr>
+											</thead>
 											<tbody>
 												{% for paymentMethod in paymentMethods %}
 												<tr><td style="text-align: left; padding-left: 20px;">{{ paymentMethod.name }}</td>

@@ -37,7 +37,7 @@ class Income extends Authenticated
 		
 		if ($allGood) {
 			Flash::addMessage('Przychód dodano pomyślnie!');
-			View::renderTemplate('MainMenu/index.html');
+			$this->redirect('/Income/index');
 		} else {
 		$arg['incomesCategories'] = IncomeExpenseManager::getIncomesCategories();
 		$arg['amount'] = $_POST['amount'];

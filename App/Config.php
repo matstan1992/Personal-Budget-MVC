@@ -14,19 +14,19 @@ class Config
      * Database host
      * @var string
      */
-    const DB_HOST = 'localhost';
+    const DB_HOST = '';
 
     /**
      * Database name
      * @var string
      */
-    const DB_NAME = 'personal_budget_mvc';
+    const DB_NAME = '';
 
     /**
      * Database user
      * @var string
      */
-    const DB_USER = 'root';
+    const DB_USER = '';
 
     /**
      * Database password
@@ -44,12 +44,12 @@ class Config
      * Secret key for hashing
      * @var boolean
      */
-    const SECRET_KEY = '7Ge6z9LUvObOAi3FkABgJgy1oZUMTagY';
+    const SECRET_KEY = '';
 	
 	/**
 	* Set the mail sender 
 	*
 	* @var string 
 	*/
-	const EMAIL_FROM = 'your.personal.budget@gmail.com';
+	const EMAIL_FROM = '';
 }

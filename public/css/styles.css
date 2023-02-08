@@ -193,6 +193,11 @@ footer
 	width: 250px;
 }
 
+.limit
+{
+    display: none;
+}
+
 textarea,
 input[type=number], 
 input[type=date]

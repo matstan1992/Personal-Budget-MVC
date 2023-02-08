@@ -38,7 +38,7 @@ class Expense extends Authenticated
 		
 		if ($allGood) {
 			Flash::addMessage('Wydatek dodano pomyślnie!');
-			View::renderTemplate('MainMenu/index.html');
+			$this->redirect('/expense/index');
 		} else {
 		$arg['expensesCategories'] = IncomeExpenseManager::getExpensesCategories();
 		$arg['paymentMethods'] = IncomeExpenseManager::getPaymentMethods();
@@ -48,5 +48,24 @@ class Expense extends Authenticated
 		
 		View::renderTemplate('Expense/index.html', $arg);
 		}
+	}
+	
+	public function getCategoryLimitAction() 
+	{
+		$id = $this->route_params['id'];
+		$data = IncomeExpenseManager::getLimit($id);
+		
+		echo json_encode($data);
+	}
+	
+	public function getExpensesDateAction()
+	{
+		$id = $this->route_params['id'];
+		$date = $this->route_params['date'];
+		
+		$dates = IncomeExpenseManager::findStartAndEndDate($date);
+		$monthlySpend = IncomeExpenseManager::getMonthlyExpenses($id, $date, $dates);
+		
+		echo json_encode($monthlySpend);
 	}
 }

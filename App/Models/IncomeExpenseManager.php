@@ -80,14 +80,14 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (isset($_SESSION['user_id'])) {
 						
-			$sql = "SELECT id, name FROM expenses_category_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
+			$sql = "SELECT id, name, category_limit FROM expenses_category_assigned_to_users WHERE user_id =".$_SESSION['user_id'];
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
 			
 			$stmt->execute();
 
-			return $stmt->fetchAll();
+			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 	
@@ -366,10 +366,21 @@ class IncomeExpenseManager extends \Core\Model
 		
 		if ($allGood == true)
 		{
-			$sql = "UPDATE expenses_category_assigned_to_users SET name = :name WHERE id = :id";
+			$sql = "UPDATE expenses_category_assigned_to_users SET name = :name, category_limit = :limit WHERE id = :id";
 			
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
+			
+			if (strpos($_POST['limit'], ",") == true) {
+				$_POST['limit'] = str_replace(",", ".", $_POST['limit']);
+			}
+		
+			if ($_POST['limit'] == "") {
+				$stmt->bindValue(':limit', NULL, PDO::PARAM_STR);
+			} else {
+				$stmt->bindValue(':limit', $_POST['limit'], PDO::PARAM_STR);
+			}
+			
 			
 			$stmt->bindValue(':id', $_POST['expenseCategoryId'], PDO::PARAM_INT);
 			$stmt->bindValue(':name', $_POST['expenseCategory'], PDO::PARAM_STR);
@@ -474,4 +485,55 @@ class IncomeExpenseManager extends \Core\Model
 		return false;
 	}
 	
+	public static function getLimit($id) 
+	{
+		$sql = 'SELECT * FROM expenses_category_assigned_to_users WHERE id = :categoryId AND user_id = :user_id';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':categoryId', $id, PDO::PARAM_INT);
+		
+		$stmt->execute();
+		$expenseArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $expenseArray;
+	}
+	
+	public static function findStartAndEndDate($date)
+	{
+		list($year, $month, $day) = explode("-", $date);
+		$numberOfDaysOfTheMonth = date("t");
+		
+		$startDate = date("Y-m-d", mktime(0, 0, 0, $month, "01", $year));
+		$endDate = date("Y-m-d", mktime(0, 0, 0, $month, $numberOfDaysOfTheMonth, $year));
+		
+		$dates = [$startDate, $endDate];
+		
+		return $dates;
+	}
+	
+	public static function getMonthlyExpenses($id, $date, $dates)
+	{
+		$startDate = $dates[0];
+		$endDate = $dates[1];
+		
+		$sql = 'SELECT exd.name, ex.date_of_expense, ex.amount 
+					FROM expenses ex, expenses_category_assigned_to_users exd 
+					WHERE ex.user_id = :user_id AND exd.id = :categoryId AND ex.date_of_expense >= :startDate AND ex.date_of_expense <= :endDate AND exd.user_id = ex.user_id AND exd.id = ex.expense_category_assigned_to_user_id';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':categoryId', $id, PDO::PARAM_INT);
+		$stmt->bindValue(':startDate', $startDate, PDO::PARAM_STR);
+		$stmt->bindValue(':endDate', $endDate, PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$expenseArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+		
+		return $expenseArray;
+	}
 }
