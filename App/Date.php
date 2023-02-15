@@ -18,4 +18,10 @@ class Date
 		$today = new DateTime();
 		return $today->format('Y-m-d');
 	}
+	
+	public static function getLastDate()
+	{
+		$lastDate = new DateTime();
+		return $lastDate->format('Y-m-t');
+	}
 }

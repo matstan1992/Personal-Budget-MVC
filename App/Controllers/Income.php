@@ -23,6 +23,7 @@ class Income extends Authenticated
     {
 		$arg['incomesCategories'] = IncomeExpenseManager::getIncomesCategories();
 		$arg['date'] = Date::getCurrentDate();
+		$arg['lastDate'] = Date::getLastDate();
         View::renderTemplate('Income/index.html', $arg);
     }
 	

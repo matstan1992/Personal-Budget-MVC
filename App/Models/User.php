@@ -52,8 +52,8 @@ class User extends \Core\Model
 			$hashed_token = $token->getHash();
 			$this->activation_token = $token->getValue();
 			
-            $sql = 'INSERT INTO users (name, email, password_hash, activation_hash)
-                    VALUES (:name, :email, :password_hash, :activation_hash)';
+            $sql = 'INSERT INTO users (name, email, password_hash, activation_hash) 
+						VALUES (:name, :email, :password_hash, :activation_hash)';
                                               
             $db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -80,17 +80,23 @@ class User extends \Core\Model
 		$db = static::getDB();
 		
 		//default expenses
-		$add_default_expenses_category = "INSERT INTO expenses_category_assigned_to_users (user_id, name) SELECT $user_id, name FROM expenses_category_default";
+		$add_default_expenses_category = "INSERT INTO expenses_category_assigned_to_users (user_id, name) 
+																	SELECT $user_id, name 
+																	FROM expenses_category_default";
 		$stmt = $db->prepare($add_default_expenses_category);
 		$stmt->execute();
 		
 		//default incomes
-		$add_default_incomes_category = "INSERT INTO incomes_category_assigned_to_users (user_id, name) SELECT $user_id, name FROM incomes_category_default";
+		$add_default_incomes_category = "INSERT INTO incomes_category_assigned_to_users (user_id, name) 
+																SELECT $user_id, name 
+																FROM incomes_category_default";
 		$stmt = $db->prepare($add_default_incomes_category);
 		$stmt->execute();
 		
 		//default payment methods 
-		$add_default_payment_methods = "INSERT INTO payment_methods_assigned_to_users (user_id, name) SELECT $user_id, name FROM payment_methods_default";
+		$add_default_payment_methods = "INSERT INTO payment_methods_assigned_to_users (user_id, name) 
+																	SELECT $user_id, name 
+																	FROM payment_methods_default";
 		$stmt = $db->prepare($add_default_payment_methods);
 		$stmt->execute();
 	}
@@ -164,7 +170,9 @@ class User extends \Core\Model
 	 */ 
 	public static function findByEmail($email) 
 	{
-		$sql = 'SELECT * FROM users WHERE email = :email';
+		$sql = 'SELECT * 
+					FROM users 
+					WHERE email = :email';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -207,7 +215,9 @@ class User extends \Core\Model
      */
     public static function findByID($id)
     {
-        $sql = 'SELECT * FROM users WHERE id = :id';
+        $sql = 'SELECT * 
+					FROM users 
+					WHERE id = :id';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -234,8 +244,8 @@ class User extends \Core\Model
 
         $this->expiry_timestamp = time() + 60 * 60 * 24 * 30;  // 30 days from now
 
-        $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at)
-                VALUES (:token_hash, :user_id, :expires_at)';
+        $sql = 'INSERT INTO remembered_logins (token_hash, user_id, expires_at) 
+					VALUES (:token_hash, :user_id, :expires_at)';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -282,9 +292,8 @@ class User extends \Core\Model
 		$expiry_timestamp = time() + 60 * 10; // 10 min from now 
 		
 		$sql = 'UPDATE users 
-				SET password_reset = :token_hash, 
-					password_reset_expires_at = :expires_at 
-				WHERE id = :id';
+					SET password_reset = :token_hash, password_reset_expires_at = :expires_at 
+					WHERE id = :id';
 					
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -323,7 +332,8 @@ class User extends \Core\Model
 		$token = new Token($token);
 		$hashed_token = $token->getHash();
 		
-		$sql = 'SELECT * FROM users 
+		$sql = 'SELECT * 
+					FROM users 
 					WHERE password_reset = :token_hash';
 		
 		$db = static::getDB();
@@ -365,10 +375,8 @@ class User extends \Core\Model
 			$password_hash = password_hash($this->password, PASSWORD_DEFAULT);
 			
 			$sql = 'UPDATE users 
-					SET password_hash = :password_hash,
-					    password_reset = NULL,
-					    password_reset_expires_at = NULL
-					WHERE id = :id';
+						SET password_hash = :password_hash, password_reset = NULL, password_reset_expires_at = NULL
+						WHERE id = :id';
 			
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
@@ -410,8 +418,7 @@ class User extends \Core\Model
 		$hashed_token = $token->getHash();
 		
 		$sql = 'UPDATE users 
-					SET is_active = 1,
-						activation_hash = null
+					SET is_active = 1, activation_hash = null
 					WHERE activation_hash = :hashed_token'; 
 					
 		$db = static::getDB();
@@ -444,8 +451,7 @@ class User extends \Core\Model
 		if (empty($this->errors)) {
 			
 			$sql = 'UPDATE users 
-						SET name = :name,
-								email = :email';
+						SET name = :name, email = :email';
 			
 			// Add password if it`s set 
 			if (isset($this->password)) {

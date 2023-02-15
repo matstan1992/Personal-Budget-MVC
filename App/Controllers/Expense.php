@@ -24,6 +24,7 @@ class Expense extends Authenticated
 		$arg['expensesCategories'] = IncomeExpenseManager::getExpensesCategories();
 		$arg['paymentMethods'] = IncomeExpenseManager::getPaymentMethods();
 		$arg['date'] = Date::getCurrentDate();
+		$arg['lastDate'] = Date::getLastDate();
         View::renderTemplate('Expense/index.html', $arg);
     }
 	

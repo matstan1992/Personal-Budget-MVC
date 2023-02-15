@@ -45,6 +45,19 @@
 				$('#paymentMethodIdModal').val(data[3]);
 			
 			});
+			
+			$('.deletePaymentBtn').on('click', function(){
+				$('#deletePaymentMethodModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function(){
+					return $(this).text();
+				}).get();
+				
+				$('#delPaymentMethodModal').val(data[0]);
+				$('#delPaymentMethodIdModal').val(data[3]);
+			
+			});
 		});
 	</script>
 
@@ -130,11 +143,18 @@
 											</thead>
 											<tbody>
 												{% for category in incomesCategories %}
-												<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
-												<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editIncomeBtn" data-bs-toggle="modal" data-bs-target="#editIncomeCategoryModal"></i></td>
-												<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
-												<td style="display:none;">{{ category.id }}</td></tr>
-											{% endfor %}
+													{% if category.name == "Inne" %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
+														<td style="width: 50px;"></td>
+														<td style="width: 50px;"></td>
+														<td style="display:none;">{{ category.id }}</td></tr>
+													{% else %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
+														<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editIncomeBtn" data-bs-toggle="modal" data-bs-target="#editIncomeCategoryModal"></i></td>
+														<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
+														<td style="display:none;">{{ category.id }}</td></tr>
+													{% endif %}
+												{% endfor %}
 											</tbody>
 										</table>
 										
@@ -216,12 +236,20 @@
 											</thead>
 											<tbody>
 												{% for category in expensesCategories %}
-												<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
-												<td>{{ category.category_limit }}</td>
-												<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editExpenseBtn" data-bs-toggle="modal" data-bs-target="#editExpenseCategoryModal"></i></td>
-												<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
-												<td style="display:none;">{{ category.id }}</td></tr>
-											{% endfor %}
+													{% if category.name == "Inne" %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
+														<td></td>
+														<td style="width: 50px;"></td>
+														<td style="width: 50px;"></td>
+														<td style="display:none;">{{ category.id }}</td></tr>
+													{% else %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
+														<td>{{ category.category_limit }}</td>
+														<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editExpenseBtn" data-bs-toggle="modal" data-bs-target="#editExpenseCategoryModal"></i></td>
+														<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
+														<td style="display:none;">{{ category.id }}</td></tr>
+													{% endif %}
+												{% endfor %}
 											</tbody>
 										</table>
 										
@@ -268,7 +296,7 @@
 
 												<input type="hidden" id="expenseCategoryIdModal" name="expenseCategoryId">
 												<div class="input-group mb-3">
-													<span class="input-group-text"><i class="icon-money"></i></span>
+													<span class="input-group-text"><i class="icon-basket"></i></span>
 													<input type="text" class="form-control" id="expenseCategoryModal" placeholder="Kategoria wydatków" maxlength="40" step="any" aria-label="KategoriaWydatku" name="expenseCategory" required>
 												</div>
 												
@@ -309,11 +337,18 @@
 											</thead>
 											<tbody>
 												{% for paymentMethod in paymentMethods %}
-												<tr><td style="text-align: left; padding-left: 20px;">{{ paymentMethod.name }}</td>
-												<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editPaymentBtn" data-bs-toggle="modal" data-bs-target="#editPaymentMethodModal"></i></td>
-												<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
-												<td style="display:none;">{{ paymentMethod.id }}</td></tr>
-											{% endfor %}
+													{% if paymentMethod.name == "Inne" %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ paymentMethod.name }}</td>
+														<td style="width: 50px;"></td>
+														<td style="width: 50px;"></td>
+														<td style="display:none;">{{ paymentMethod.id }}</td></tr>
+													{% else %}
+														<tr><td style="text-align: left; padding-left: 20px;">{{ paymentMethod.name }}</td>
+														<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editPaymentBtn" data-bs-toggle="modal" data-bs-target="#editPaymentMethodModal"></i></td>
+														<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky deletePaymentBtn" data-bs-toggle="modal" data-bs-target="#deletePaymentMethodModal"></i></td>
+														<td style="display:none;">{{ paymentMethod.id }}</td></tr>
+													{% endif %}
+												{% endfor %}
 											</tbody>
 										</table>
 										
@@ -360,8 +395,34 @@
 
 												<input type="hidden" id="paymentMethodIdModal" name="paymentMethodId">
 												<div class="input-group">
-													<span class="input-group-text"><i class="icon-money"></i></span>
+													<span class="input-group-text"><i class="icon-credit-card"></i></span>
 													<input type="text" class="form-control" id="paymentMethodModal" placeholder="Sposób płatności" maxlength="40" step="any" aria-label="SposobPlatnosci" name="paymentMethod" required>
+												</div>
+
+											</div>
+											<div class="modal-footer justify-content-center">
+												<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+												<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal fade" id="deletePaymentMethodModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deletePaymentMethod" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="deletePaymentMethod">Czy chcesz usunąć sposób płatności?</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+										</div>
+										<form method="post" action="/settings/deletePaymentMethod">
+											<div class="modal-body">
+
+												<input type="hidden" id="delPaymentMethodIdModal" name="paymentMethodId">
+												<div class="input-group">
+													<span class="input-group-text"><i class="icon-credit-card"></i></span>
+													<input type="text" class="form-control" id="delPaymentMethodModal" aria-label="SposobPlatnosci" name="paymentMethod" disabled="disabled">
 												</div>
 
 											</div>
