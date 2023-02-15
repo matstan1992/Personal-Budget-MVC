@@ -70,7 +70,7 @@
 								<div class="input-group mx-auto mb-2 mt-3">
 									<span class="input-group-text"><i class="icon-calendar"></i></span>
 									<label class="visually-hidden">Data</label>
-									<input class="form-control" type="date" id="date" name="date" aria-label="Data" required value="{{ date }}">
+									<input class="form-control" type="date" id="date" name="date" aria-label="Data" min="2000-01-01" max="{{ lastDate }}" value="{{ date }}" required>
 								</div>
 							</div>
 

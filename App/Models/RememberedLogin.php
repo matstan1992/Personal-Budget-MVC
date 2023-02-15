@@ -25,8 +25,9 @@ class RememberedLogin extends \Core\Model
         $token = new Token($token);
         $token_hash = $token->getHash();
 
-        $sql = 'SELECT * FROM remembered_logins
-                WHERE token_hash = :token_hash';
+        $sql = 'SELECT * 
+					FROM remembered_logins 
+					WHERE token_hash = :token_hash';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
@@ -66,8 +67,8 @@ class RememberedLogin extends \Core\Model
      */
     public function delete()
     {
-        $sql = 'DELETE FROM remembered_logins
-                WHERE token_hash = :token_hash';
+        $sql = 'DELETE FROM remembered_logins 
+					WHERE token_hash = :token_hash';
 
         $db = static::getDB();
         $stmt = $db->prepare($sql);
