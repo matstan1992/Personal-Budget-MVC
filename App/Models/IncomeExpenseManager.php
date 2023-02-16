@@ -33,8 +33,8 @@ class IncomeExpenseManager extends \Core\Model
 		if (isset($_SESSION['user_id'])) {
 						
 			$sql = "SELECT id, name 
-						FROM incomes_category_assigned_to_users 
-						WHERE user_id =".$_SESSION['user_id'];
+					FROM incomes_category_assigned_to_users 
+					WHERE user_id =".$_SESSION['user_id'];
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -55,7 +55,7 @@ class IncomeExpenseManager extends \Core\Model
 		if (static::validate()) {
 			
 			$sql = "INSERT INTO incomes (id, user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) 
-						VALUES ('NULL', :user_id, :category, :amount, :date, :comment)";
+					VALUES ('NULL', :user_id, :category, :amount, :date, :comment)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -83,8 +83,8 @@ class IncomeExpenseManager extends \Core\Model
 		if (isset($_SESSION['user_id'])) {
 						
 			$sql = "SELECT id, name, category_limit 
-						FROM expenses_category_assigned_to_users 
-						WHERE user_id =".$_SESSION['user_id'];
+					FROM expenses_category_assigned_to_users 
+					WHERE user_id =".$_SESSION['user_id'];
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -105,8 +105,8 @@ class IncomeExpenseManager extends \Core\Model
 		if (isset($_SESSION['user_id'])) {
 						
 			$sql = "SELECT id, name 
-						FROM payment_methods_assigned_to_users 
-						WHERE user_id =".$_SESSION['user_id'];
+					FROM payment_methods_assigned_to_users 
+					WHERE user_id =".$_SESSION['user_id'];
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -127,7 +127,7 @@ class IncomeExpenseManager extends \Core\Model
 		if (static::validate()) {
 			
 			$sql = "INSERT INTO expenses (id, user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) 
-						VALUES ('NULL', :user_id, :category, :paymentMethod, :amount, :date, :comment)";
+					VALUES ('NULL', :user_id, :category, :paymentMethod, :amount, :date, :comment)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -211,8 +211,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM incomes_category_assigned_to_users 
-					WHERE user_id = :user_id AND name = :incomeName";
+				FROM incomes_category_assigned_to_users 
+				WHERE user_id = :user_id AND name = :incomeName";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -236,7 +236,7 @@ class IncomeExpenseManager extends \Core\Model
 		if (static::validateNewIncomeCategoryName()) {
 			
 			$sql = "INSERT INTO incomes_category_assigned_to_users (id, user_id, name) 
-						VALUES ('NULL', :user_id, :name)";
+					VALUES ('NULL', :user_id, :name)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -262,8 +262,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM incomes_category_assigned_to_users 
-					WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
+				FROM incomes_category_assigned_to_users 
+				WHERE user_id = :user_id AND name = :incomeName AND id <> :id";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -283,8 +283,8 @@ class IncomeExpenseManager extends \Core\Model
 		if ($allGood == true)
 		{
 			$sql = "UPDATE incomes_category_assigned_to_users 
-						SET name = :name 
-						WHERE id = :id";
+					SET name = :name 
+					WHERE id = :id";
 			
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
@@ -311,8 +311,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM expenses_category_assigned_to_users 
-					WHERE user_id = :user_id AND name = :expenseName";
+				FROM expenses_category_assigned_to_users 
+				WHERE user_id = :user_id AND name = :expenseName";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -336,7 +336,7 @@ class IncomeExpenseManager extends \Core\Model
 		if (static::validateNewExpenseCategoryName()) {
 			
 			$sql = "INSERT INTO expenses_category_assigned_to_users (id, user_id, name) 
-						VALUES ('NULL', :user_id, :name)";
+					VALUES ('NULL', :user_id, :name)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -362,8 +362,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM expenses_category_assigned_to_users 
-					WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
+				FROM expenses_category_assigned_to_users 
+				WHERE user_id = :user_id AND name = :expenseName AND id <> :id";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -383,8 +383,8 @@ class IncomeExpenseManager extends \Core\Model
 		if ($allGood == true)
 		{
 			$sql = "UPDATE expenses_category_assigned_to_users 
-						SET name = :name, category_limit = :limit 
-						WHERE id = :id";
+					SET name = :name, category_limit = :limit 
+					WHERE id = :id";
 			
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
@@ -422,8 +422,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM payment_methods_assigned_to_users 
-					WHERE user_id = :user_id AND name = :paymentName";
+				FROM payment_methods_assigned_to_users 
+				WHERE user_id = :user_id AND name = :paymentName";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -473,8 +473,8 @@ class IncomeExpenseManager extends \Core\Model
 		}
 		
 		$sql = "SELECT * 
-					FROM payment_methods_assigned_to_users 
-					WHERE user_id = :user_id AND name = :paymentName AND id <> :id";
+				FROM payment_methods_assigned_to_users 
+				WHERE user_id = :user_id AND name = :paymentName AND id <> :id";
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -494,8 +494,8 @@ class IncomeExpenseManager extends \Core\Model
 		if ($allGood == true)
 		{
 			$sql = "UPDATE payment_methods_assigned_to_users 
-						SET name = :name 
-						WHERE id = :id";
+					SET name = :name 
+					WHERE id = :id";
 			
 			$db = static::getDB();
 			$stmt = $db->prepare($sql);
@@ -509,11 +509,61 @@ class IncomeExpenseManager extends \Core\Model
 		return false;
 	}
 	
+	public function deletePaymentMethod()
+	{
+		$this->changePaymentMethodToOther();
+		
+		$sql = 'DELETE FROM payment_methods_assigned_to_users
+				WHERE user_id = :user_id AND id = :paymentMethodId';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentMethodId', $_POST['paymentMethodId'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
+	
+	protected function getCategoryIdOther()
+	{
+		$sql = 'SELECT id 
+				FROM payment_methods_assigned_to_users
+				WHERE user_id = :user_id AND name = :paymentName';
+				
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentName', 'Inne', PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];
+	}
+	
+	protected function changePaymentMethodToOther()
+	{
+		$sql = 'UPDATE expenses
+				SET payment_method_assigned_to_user_id = :otherId
+				WHERE user_id = :user_id AND payment_method_assigned_to_user_id = :paymentMethodId';
+				
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':paymentMethodId', $_POST['paymentMethodId'], PDO::PARAM_INT);
+		$stmt->bindValue(':otherId', $this->getCategoryIdOther(), PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
+	
 	public static function getLimit($id) 
 	{
 		$sql = 'SELECT * 
-					FROM expenses_category_assigned_to_users 
-					WHERE id = :categoryId AND user_id = :user_id';
+				FROM expenses_category_assigned_to_users 
+				WHERE id = :categoryId AND user_id = :user_id';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -546,8 +596,8 @@ class IncomeExpenseManager extends \Core\Model
 		$endDate = $dates[1];
 		
 		$sql = 'SELECT exd.name, ex.date_of_expense, ex.amount 
-					FROM expenses ex, expenses_category_assigned_to_users exd 
-					WHERE ex.user_id = :user_id AND exd.id = :categoryId AND ex.date_of_expense >= :startDate AND ex.date_of_expense <= :endDate AND exd.user_id = ex.user_id AND exd.id = ex.expense_category_assigned_to_user_id';
+				FROM expenses ex, expenses_category_assigned_to_users exd 
+				WHERE ex.user_id = :user_id AND exd.id = :categoryId AND ex.date_of_expense >= :startDate AND ex.date_of_expense <= :endDate AND exd.user_id = ex.user_id AND exd.id = ex.expense_category_assigned_to_user_id';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($sql);
@@ -562,4 +612,5 @@ class IncomeExpenseManager extends \Core\Model
 		
 		return $expenseArray;
 	}
+	
 }

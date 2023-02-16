@@ -62,7 +62,7 @@ class Settings extends Authenticated
 	
 	public function updateIncomeCategory()
 	{
-		if (isset($_POST['incomeCategory'])) {
+		if (isset($_POST['incomeCategoryId'])) {
 			$incomeCategory = new IncomeExpenseManager($_POST);
 			
 			if ($incomeCategory->updateIncomeCategory()) {
@@ -100,7 +100,7 @@ class Settings extends Authenticated
 	
 	public function updateExpenseCategory()
 	{
-		if (isset($_POST['expenseCategory'])) {
+		if (isset($_POST['expenseCategoryId'])) {
 			$expenseCategory = new IncomeExpenseManager($_POST);
 			
 			if ($expenseCategory->updateExpenseCategory()) {
@@ -138,7 +138,7 @@ class Settings extends Authenticated
 	
 	public function updatePaymentMethod()
 	{
-		if (isset($_POST['paymentMethod'])) {
+		if (isset($_POST['paymentMethodId'])) {
 			$paymentMethod = new IncomeExpenseManager($_POST);
 			
 			if ($paymentMethod->updatePaymentMethod()) {
@@ -153,6 +153,24 @@ class Settings extends Authenticated
 			$this->redirect('/settings/index');
 		}
 		
+	}
+	
+	public function deletePaymentMethod()
+	{
+		if (isset($_POST['paymentMethodId'])) {
+			$paymentMethod = new IncomeExpenseManager($_POST);
+			
+			if ($paymentMethod->deletePaymentMethod()) {
+				
+				Flash::addMessage('Sposób płatności został usunięty. Wydatki, które posiadały ten sposób płatności od teraz posiadają sposób płatności o nazwie "Inne".');
+				$this->redirect('/settings/index');
+				
+			} else {		
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
 	}
 	
 	/**
