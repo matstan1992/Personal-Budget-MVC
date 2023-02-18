@@ -409,6 +409,56 @@ class IncomeExpenseManager extends \Core\Model
 		return false;
 	}	
 	
+	public function deleteExpenseCategory()
+	{
+		$this->changeExpenseCategoryToOther();
+		
+		$sql = 'DELETE FROM expenses_category_assigned_to_users
+				WHERE user_id = :user_id AND id = :expenseCategoryId';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseCategoryId', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
+	
+	protected function getExpenseCategoryIdOther()
+	{
+		$sql = 'SELECT id 
+				FROM expenses_category_assigned_to_users
+				WHERE user_id = :user_id AND name = :expenseCategoryName';
+				
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseCategoryName', "Inne", PDO::PARAM_STR);
+		
+		$stmt->execute();
+		$result = $stmt->fetch(PDO::FETCH_ASSOC);
+		
+		return $result['id'];
+	}
+	
+	protected function changeExpenseCategoryToOther()
+	{
+		$sql = 'UPDATE expenses
+				SET expense_category_assigned_to_user_id = :otherId
+				WHERE user_id = :user_id AND expense_category_assigned_to_user_id = :expenseCategoryId';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseCategoryId', $_POST['expenseCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':otherId', $this->getExpenseCategoryIdOther(), PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
+	
 	protected function validateNewPaymentMethodName()
 	{	
 		$allGood = true;
@@ -525,7 +575,7 @@ class IncomeExpenseManager extends \Core\Model
 		return $stmt->execute();
 	}
 	
-	protected function getCategoryIdOther()
+	protected function getPaymentMethodIdOther()
 	{
 		$sql = 'SELECT id 
 				FROM payment_methods_assigned_to_users
@@ -554,7 +604,7 @@ class IncomeExpenseManager extends \Core\Model
 		
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':paymentMethodId', $_POST['paymentMethodId'], PDO::PARAM_INT);
-		$stmt->bindValue(':otherId', $this->getCategoryIdOther(), PDO::PARAM_INT);
+		$stmt->bindValue(':otherId', $this->changePaymentMethodToOther(), PDO::PARAM_INT);
 		
 		return $stmt->execute();
 	}
