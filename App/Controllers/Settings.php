@@ -77,6 +77,24 @@ class Settings extends Authenticated
 		}
 	}
 	
+	public function deleteIncomeCategory()
+	{
+		if (isset($_POST['incomeCategoryId'])) {
+			$incomeCategory = new IncomeExpenseManager($_POST);
+			
+			if ($incomeCategory->deleteIncomeCategory()) {
+				
+				Flash::addMessage('Kategoria przychodów została usunięta. Wszystkie przychody przypisane do tej kategorii zostały przeniesione do kategorii "Inne".');
+				$this->redirect('/settings/index');
+				
+			} else {
+				$this->redirect('/settings/index');
+			}
+		} else {
+			$this->redirect('/settings/index');
+		}
+	}
+	
 	public function addNewExpenseCategory()
 	{
 		if (isset($_POST['newExpenseCategory'])) {
@@ -116,9 +134,9 @@ class Settings extends Authenticated
 	public function deleteExpenseCategory()
 	{
 		if (isset($_POST['expenseCategoryId'])) {
-			$paymentMethod = new IncomeExpenseManager($_POST);
+			$expenseCategory = new IncomeExpenseManager($_POST);
 			
-			if ($paymentMethod->deleteExpenseCategory()) {
+			if ($expenseCategory->deleteExpenseCategory()) {
 				
 				Flash::addMessage('Kategoria wydatków została usunięta. Wszystkie wydatki przypisane do tej kategorii zostały przeniesione do kategorii "Inne".');
 				$this->redirect('/settings/index');

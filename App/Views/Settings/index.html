@@ -19,6 +19,19 @@
 			
 			});
 			
+			$('.deleteIncomeBtn').on('click', function(){
+				$('#deleteIncomeCategoryModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function(){
+					return $(this).text();
+				}).get();
+				
+				$('#delIncomeCategoryModal').val(data[0]);
+				$('#delIncomeCategoryIdModal').val(data[3]);
+			
+			});
+			
 			$('.editExpenseBtn').on('click', function(){
 				$('#editExpenseCategoryModal').modal('show');
 				
@@ -164,7 +177,7 @@
 													{% else %}
 														<tr><td style="text-align: left; padding-left: 20px;">{{ category.name }}</td>
 														<td style="width: 50px;"><i class="btn btn-warning p-2 icon-pencil position-sticky editIncomeBtn" data-bs-toggle="modal" data-bs-target="#editIncomeCategoryModal"></i></td>
-														<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky" data-bs-toggle="modal" data-bs-target="#exampleModal"></i></td>
+														<td style="width: 50px;"><i class="btn btn-danger p-2 icon-trash position-sticky deleteIncomeBtn" data-bs-toggle="modal" data-bs-target="#deleteIncomeCategoryModal"></i></td>
 														<td style="display:none;">{{ category.id }}</td></tr>
 													{% endif %}
 												{% endfor %}
@@ -216,6 +229,32 @@
 												<div class="input-group">
 													<span class="input-group-text"><i class="icon-money"></i></span>
 													<input type="text" class="form-control" id="incomeCategoryModal" placeholder="Kategoria przychodów" maxlength="40" step="any" aria-label="KategoriaPrzychodu" name="incomeCategory" required>
+												</div>
+
+											</div>
+											<div class="modal-footer justify-content-center">
+												<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+												<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal fade" id="deleteIncomeCategoryModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteIncomeCategory" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="deleteIncomeCategory">Czy chcesz usunąć kategorię przychodów?</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+										</div>
+										<form method="post" action="/settings/deleteIncomeCategory">
+											<div class="modal-body">
+
+												<input type="hidden" id="delIncomeCategoryIdModal" name="incomeCategoryId">
+												<div class="input-group">
+													<span class="input-group-text"><i class="icon-credit-card"></i></span>
+													<input type="text" class="form-control" id="delIncomeCategoryModal" aria-label="KategoriaPrzychodu" name="incomeCategory" disabled="disabled">
 												</div>
 
 											</div>
