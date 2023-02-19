@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use \Core\View;
+use \App\Auth;
+use \App\Flash;
 use App\Models\Balances;
 
 /**
@@ -62,5 +64,23 @@ class Balance extends Authenticated
 		}
 		
         View::renderTemplate('Balance/index.html', $arg);
+	}
+	
+	public function deleteExpense()
+	{
+		if (isset($_POST['expenseId'])) {
+			$expense = new Balances($_POST);
+			
+			if ($expense->deleteExpense()) {
+				
+				Flash::addMessage('Wydatek został usunięty.');
+				$this->redirect('/balance/index');
+				
+			} else {
+				$this->redirect('/balance/index');
+			}
+		} else {
+			$this->redirect('/balance/index');
+		}
 	}
 }
