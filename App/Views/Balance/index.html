@@ -2,6 +2,48 @@
 
 {% block title %}Bilans{% endblock %}
 
+{% block footer %}
+	
+	<script>
+		$(document).ready(function() {
+			$('.deleteExpenseBtn').on('click', function(){
+				$('#deleteExpenseModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function(){
+					return $(this).text();
+				}).get();
+				
+				$('#delExpenseId').val(data[5]);
+				$('#delExpenseDate').val(data[0]);
+				$('#delExpenseCat').val(data[1]);
+				$('#delExpenseMethod').val(data[2]);
+				$('#delExpenseAmount').val(data[3]);
+				$('#delExpenseCom').val(data[4]);
+			
+			});
+			
+			$('.deleteIncomeBtn').on('click', function(){
+				$('#deleteIncomeModal').modal('show');
+				
+				$tr = $(this).closest('tr');
+				var data = $tr.children("td").map(function(){
+					return $(this).text();
+				}).get();
+				
+				$('#delIncomeId').val(data[4]);
+				$('#delIncomeDate').val(data[0]);
+				$('#delIncomeCat').val(data[1]);
+				$('#delIncomeAmount').val(data[2]);
+				$('#delIncomeCom').val(data[3]);
+			
+			});
+
+		});
+	</script>
+
+{% endblock %}
+
 {% block body %}
 			
 	<nav class="navbar mt-4 navbar-expand-lg navbar-dark">
@@ -194,8 +236,8 @@
 										
 									{% else %}
 										
-										<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>
-										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>
+										<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie przychodów</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th><th style="display: none;">ID</th><th></th></tr></thead>
 										<tbody>
 										
 										{% set ordinalNumber = 0 %}
@@ -205,7 +247,7 @@
 											{% set ordinalNumber = ordinalNumber + 1 %}
 											
 											<tr><th scope="row">{{ ordinalNumber }}</th>
-											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td></tr></tbody>
+											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td><td style="display: none;">{{ detail[4] }}</td><td><i class="btn btn-danger icon-trash position-sticky deleteIncomeBtn" data-bs-toggle="modal" data-bs-target="#deleteIncomeModal"></i></td></tr></tbody>
 											
 										{% endfor %}
 										
@@ -225,8 +267,8 @@
 										
 									{% else %}
 										
-										<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>
-										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Sposób płatności</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>
+										<thead><tr><th scope="col" colspan="7">Szczegółowe zestawienie wydatków</th></tr>
+										<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Sposób płatności</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th><th style="display: none;">ID</th><th></th></tr></thead>
 										<tbody>
 										
 										{% set ordinalNumber = 0 %}
@@ -236,7 +278,7 @@
 											{% set ordinalNumber = ordinalNumber + 1 %}
 											
 											<tr><th scope="row">{{ ordinalNumber }}</th>
-											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td><td>{{ detail[4] }}</td></tr></tbody>
+											<td>{{ detail[0] }}</td><td>{{ detail[1] }}</td><td>{{ detail[2] }}</td><td>{{ detail[3] }}</td><td>{{ detail[4] }}</td><td style="display: none;">{{ detail[5] }}</td><td><i class="btn btn-danger icon-trash position-sticky deleteExpenseBtn" data-bs-toggle="modal" data-bs-target="#deleteExpenseModal"></i></td></tr></tbody>
 											
 										{% endfor %}
 										
@@ -297,6 +339,72 @@
 								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
 							</div>
 						
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="deleteExpenseModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteExpense" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="deleteExpense">Czy chcesz usunąć ten wydatek?</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+						</div>
+						<form method="post" action="/balance/deleteExpense">
+							<div class="modal-body">
+
+								<input type="hidden" id="delExpenseId" name="expenseId">
+								<div>
+									<span>Data:</span>
+									<input type="text" class="form-control" id="delExpenseDate" aria-label="Wydatek" name="expense" disabled="disabled">
+									<span>Kategoria:</span>
+									<input type="text" class="form-control" id="delExpenseCat" aria-label="Wydatek" name="expense" disabled="disabled">
+									<span>Metoda płatności:</span>
+									<input type="text" class="form-control" id="delExpenseMethod" aria-label="Wydatek" name="expense" disabled="disabled">
+									<span>Kwota:</span>
+									<input type="text" class="form-control" id="delExpenseAmount" aria-label="Wydatek" name="expense" disabled="disabled">
+									<span>Komentarz:</span>
+									<input type="text" class="form-control" id="delExpenseCom" aria-label="Wydatek" name="expense" disabled="disabled">
+								</div>
+
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="deleteIncomeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteIncome" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h1 class="modal-title fs-5" id="deleteIncome">Czy chcesz usunąć ten przychód?</h1>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+						</div>
+						<form method="post" action="/balance/deleteIncome">
+							<div class="modal-body">
+
+								<input type="hidden" id="delIncomeId" name="incomeId">
+								<div>
+									<span>Data:</span>
+									<input type="text" class="form-control" id="delIncomeDate" aria-label="Przychód" name="income" disabled="disabled">
+									<span>Kategoria:</span>
+									<input type="text" class="form-control" id="delIncomeCat" aria-label="Przychód" name="income" disabled="disabled">
+									<span>Kwota:</span>
+									<input type="text" class="form-control" id="delIncomeAmount" aria-label="Przychód" name="income" disabled="disabled">
+									<span>Komentarz:</span>
+									<input type="text" class="form-control" id="delIncomeCom" aria-label="Przychód" name="income" disabled="disabled">
+								</div>
+
+							</div>
+							<div class="modal-footer justify-content-center">
+								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+							</div>
 						</form>
 					</div>
 				</div>

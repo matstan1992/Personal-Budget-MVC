@@ -14,6 +14,15 @@ use DateTime;
  */
 class Balances extends \Core\Model
 {	
+	public $errors = [];
+
+    public function __construct($data = [])
+    {
+        foreach ($data as $key => $value) {
+            $this->$key = $value;
+        };
+    }
+	
 	/**
 	 * Get custom period 
 	 * @param string $dateStart, $dateEnd
@@ -93,10 +102,10 @@ class Balances extends \Core\Model
 	private static function getIncomes($dateStart, $dateEnd)
 	{
 		$getIncomes = 'SELECT c.name, SUM(i.amount) 
-								FROM incomes_category_assigned_to_users c 
-								INNER JOIN incomes i 
-								ON i.income_category_assigned_to_user_id = c.id 
-								WHERE i.user_id = '.$_SESSION['user_id'].' AND i.date_of_income >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND i.date_of_income <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND i.user_id = '.$_SESSION['user_id'].' GROUP BY c.name ORDER BY SUM(i.amount) DESC';
+						FROM incomes_category_assigned_to_users c 
+						INNER JOIN incomes i 
+						ON i.income_category_assigned_to_user_id = c.id 
+						WHERE i.user_id = '.$_SESSION['user_id'].' AND i.date_of_income >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND i.date_of_income <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND i.user_id = '.$_SESSION['user_id'].' GROUP BY c.name ORDER BY SUM(i.amount) DESC';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($getIncomes);
@@ -117,10 +126,10 @@ class Balances extends \Core\Model
 	private static function getExpenses($dateStart, $dateEnd)
 	{
 		$getExpenses = 'SELECT c.name, SUM(e.amount) 
-									FROM expenses_category_assigned_to_users c 
-									INNER JOIN expenses e 
-									ON e.expense_category_assigned_to_user_id = c.id 
-									WHERE e.user_id = '.$_SESSION['user_id'].' AND e.date_of_expense >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND e.date_of_expense <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND e.user_id = '.$_SESSION['user_id'].' GROUP BY c.name ORDER BY SUM(e.amount) DESC';
+						FROM expenses_category_assigned_to_users c 
+						INNER JOIN expenses e 
+						ON e.expense_category_assigned_to_user_id = c.id 
+						WHERE e.user_id = '.$_SESSION['user_id'].' AND e.date_of_expense >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND e.date_of_expense <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND e.user_id = '.$_SESSION['user_id'].' GROUP BY c.name ORDER BY SUM(e.amount) DESC';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($getExpenses);
@@ -140,11 +149,11 @@ class Balances extends \Core\Model
 	 */
 	private static function getIncomesDetails($dateStart, $dateEnd)
 	{
-		$getIncomesDetails = 'SELECT i.date_of_income, c.name, i.amount, i.income_comment 
-											FROM incomes i 
-											INNER JOIN incomes_category_assigned_to_users c 
-											ON i.income_category_assigned_to_user_id = c.id 
-											WHERE i.user_id = '.$_SESSION['user_id'].' AND i.date_of_income >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND i.date_of_income <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND i.user_id = '.$_SESSION['user_id'].' ORDER BY i.date_of_income';
+		$getIncomesDetails = 'SELECT i.date_of_income, c.name, i.amount, i.income_comment, i.id
+								FROM incomes i 
+								INNER JOIN incomes_category_assigned_to_users c 
+								ON i.income_category_assigned_to_user_id = c.id 
+								WHERE i.user_id = '.$_SESSION['user_id'].' AND i.date_of_income >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND i.date_of_income <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND i.user_id = '.$_SESSION['user_id'].' ORDER BY i.date_of_income';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($getIncomesDetails);
@@ -164,13 +173,13 @@ class Balances extends \Core\Model
 	 */
 	private static function getExpensesDetails($dateStart, $dateEnd)
 	{
-		$getExpensesDetails = 'SELECT e.date_of_expense, c.name, p.name, e.amount, e.expense_comment 
-												FROM expenses e 
-												INNER JOIN expenses_category_assigned_to_users c 
-												ON expense_category_assigned_to_user_id = c.id 
-												INNER JOIN payment_methods_assigned_to_users p 
-												ON e.payment_method_assigned_to_user_id = p.id 
-												WHERE e.user_id = '.$_SESSION['user_id'].' AND e.date_of_expense >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND e.date_of_expense <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND e.user_id = '.$_SESSION['user_id'].' ORDER BY e.date_of_expense';
+		$getExpensesDetails = 'SELECT e.date_of_expense, c.name, p.name, e.amount, e.expense_comment, e.id
+								FROM expenses e 
+								INNER JOIN expenses_category_assigned_to_users c 
+								ON expense_category_assigned_to_user_id = c.id 
+								INNER JOIN payment_methods_assigned_to_users p 
+								ON e.payment_method_assigned_to_user_id = p.id 
+								WHERE e.user_id = '.$_SESSION['user_id'].' AND e.date_of_expense >= STR_TO_DATE(:dateStart, "%Y-%m-%d") AND e.date_of_expense <= STR_TO_DATE(:dateEnd, "%Y-%m-%d") AND e.user_id = '.$_SESSION['user_id'].' ORDER BY e.date_of_expense';
 		
 		$db = static::getDB();
 		$stmt = $db->prepare($getExpensesDetails);
@@ -234,5 +243,33 @@ class Balances extends \Core\Model
 		}
 		
 		return $allGood;
+	}
+	
+	public function deleteExpense()
+	{
+		$sql = 'DELETE FROM expenses
+				WHERE user_id = :user_id AND id = :expenseId';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':expenseId', $_POST['expenseId'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
+	
+	public function deleteIncome()
+	{
+		$sql = 'DELETE FROM incomes
+				WHERE user_id = :user_id AND id = :incomeId';
+				
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeId', $_POST['incomeId'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
 	}
 }
