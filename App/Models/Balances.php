@@ -34,6 +34,7 @@ class Balances extends \Core\Model
 		$arg['expenses'] = static::getExpenses($dateStart, $dateEnd);
 		$arg['incomesDetails'] = static::getIncomesDetails($dateStart, $dateEnd);
 		$arg['expensesDetails'] = static::getExpensesDetails($dateStart, $dateEnd);
+		$arg['lastDate'] = Date::getLastDate();
 		
 		$start = new DateTime($dateStart);
 		$end = new DateTime($dateEnd);

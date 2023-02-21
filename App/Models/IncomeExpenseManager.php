@@ -713,4 +713,18 @@ class IncomeExpenseManager extends \Core\Model
 		return $expenseArray;
 	}
 	
+	public function deleteAll()
+	{
+		$sql = 'DELETE i.*, e.*
+				FROM incomes i 
+				INNER JOIN expenses e 
+				WHERE e.user_id = i.user_id AND e.user_id = :user_id';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
 }

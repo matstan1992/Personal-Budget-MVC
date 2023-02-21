@@ -203,6 +203,19 @@ class Settings extends Authenticated
 		}
 	}
 	
+	public function deleteAll()
+	{
+		$all = new IncomeExpenseManager($_POST);
+		
+		if ($all->deleteAll()) {
+			
+			Flash::addMessage('Wszystkie Twoje przychody i wydatki zostały usunięte.');
+			$this->redirect('/settings/index');
+		} else {
+			$this->redirect('/settings/index');
+		}
+	}
+	
 	/**
 	 * Show the form for editing the profile 
 	 * 

@@ -321,14 +321,14 @@
 										<span class="text-dark my-auto mx-3 fw-bold">Od:</span>
 										<span class="input-group-text"><i class="icon-calendar"></i></span>
 										<label class="visually-hidden">Data</label>
-										<input type="date" id="date1" name="date1" class="form-control col-sm-8" aria-label="Data" required>
+										<input type="date" id="date1" name="date1" class="form-control col-sm-8" aria-label="Data" min="2000-01-01" max="{{ lastDate }}" required>
 									</div>
 							
 									<div class="input-group mx-auto" style="width: 300px;">
 										<span class="text-dark my-auto mx-3 fw-bold">Do:</span>
 										<span class="input-group-text"><i class="icon-calendar"></i></span>
 										<label class="visually-hidden">Data</label>
-										<input type="date" id="date" name="date2" class="form-control col-sm-8" aria-label="Data" required>
+										<input type="date" id="date" name="date2" class="form-control col-sm-8" aria-label="Data" min="2000-01-01" max="{{ lastDate }}" required>
 									</div>
 								</div>
 								
