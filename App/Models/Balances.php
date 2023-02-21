@@ -258,4 +258,18 @@ class Balances extends \Core\Model
 		
 		return $stmt->execute();
 	}
+	
+	public function deleteIncome()
+	{
+		$sql = 'DELETE FROM incomes
+				WHERE user_id = :user_id AND id = :incomeId';
+				
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeId', $_POST['incomeId'], PDO::PARAM_INT);
+		
+		return $stmt->execute();
+	}
 }

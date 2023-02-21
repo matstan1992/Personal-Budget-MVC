@@ -83,4 +83,22 @@ class Balance extends Authenticated
 			$this->redirect('/balance/index');
 		}
 	}
+	
+	public function deleteIncome()
+	{
+		if (isset($_POST['incomeId'])) {
+			$income = new Balances($_POST);
+			
+			if ($income->deleteIncome()) {
+				
+				Flash::addMessage('Przychód został usunięty.');
+				$this->redirect('/balance/index');
+				
+			} else {
+				$this->redirect('/balance/index');
+			}
+		} else {
+			$this->redirect('/balance/index');
+		}
+	}
 }
