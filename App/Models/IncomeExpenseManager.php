@@ -314,22 +314,6 @@ class IncomeExpenseManager extends \Core\Model
 		return $stmt->execute();
 	}
 	
-	protected function changeIncomeCategoryToOther()
-	{
-		$sql = 'UPDATE incomes
-				SET income_category_assigned_to_user_id = :otherId
-				WHERE user_id = :user_id AND income_category_assigned_to_user_id = :incomeCategoryId';
-		
-		$db = static::getDB();
-		$stmt = $db->prepare($sql);
-		
-		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
-		$stmt->bindValue(':incomeCategoryId', $_POST['incomeCategoryId'], PDO::PARAM_INT);
-		$stmt->bindValue(':otherId', $this->getIncomeCategoryIdOther(), PDO::PARAM_INT);
-		
-		return $stmt->execute();
-	}
-	
 	protected function getIncomeCategoryIdOther()
 	{
 		$sql = 'SELECT id 
@@ -346,6 +330,22 @@ class IncomeExpenseManager extends \Core\Model
 		$result = $stmt->fetch(PDO::FETCH_ASSOC);
 		
 		return $result['id'];
+	}
+	
+	protected function changeIncomeCategoryToOther()
+	{
+		$sql = 'UPDATE incomes
+				SET income_category_assigned_to_user_id = :otherId
+				WHERE user_id = :user_id AND income_category_assigned_to_user_id = :incomeCategoryId';
+		
+		$db = static::getDB();
+		$stmt = $db->prepare($sql);
+		
+		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
+		$stmt->bindValue(':incomeCategoryId', $_POST['incomeCategoryId'], PDO::PARAM_INT);
+		$stmt->bindValue(':otherId', $this->getIncomeCategoryIdOther(), PDO::PARAM_INT);
+		
+		return $stmt->execute();
 	}
 	
 	protected function validateNewExpenseCategoryName()
@@ -654,7 +654,7 @@ class IncomeExpenseManager extends \Core\Model
 		
 		$stmt->bindValue(':user_id', $_SESSION['user_id'], PDO::PARAM_INT);
 		$stmt->bindValue(':paymentMethodId', $_POST['paymentMethodId'], PDO::PARAM_INT);
-		$stmt->bindValue(':otherId', $this->changePaymentMethodToOther(), PDO::PARAM_INT);
+		$stmt->bindValue(':otherId', $this->getPaymentMethodIdOther(), PDO::PARAM_INT);
 		
 		return $stmt->execute();
 	}
