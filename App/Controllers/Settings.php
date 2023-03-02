@@ -6,6 +6,7 @@ use \Core\View;
 use \App\Auth;
 use \App\Flash;
 use App\Models\IncomeExpenseManager;
+use App\Models\User;
 
 /** 
  * Settings controller 
@@ -214,6 +215,18 @@ class Settings extends Authenticated
 		} else {
 			$this->redirect('/settings/index');
 		}
+	}
+	
+	public function deleteUser()
+	{
+		
+		$delUser = new User($_POST);
+		$delUser->deleteUser();
+		
+		Auth::logout();
+		
+		$this->redirect('/home/index');
+		
 	}
 	
 	/**

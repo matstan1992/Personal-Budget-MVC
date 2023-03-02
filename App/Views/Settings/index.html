@@ -529,8 +529,8 @@
 										</dl>
 																	
 										<span><a href="/profile/edit"><button class="col p-2" id="edytuj">Edytuj dane lub hasło</button></a></span>
-										<span><button class="col p-2" id="kasuj" data-bs-toggle="modal" data-bs-target="#delAll">Usuń przychody i wydatki</button></a></span>
-										<span><a href="#"><button class="col p-2" id="kasuj1">Usuń moje konto</button></a></span>
+										<span><button class="col p-2" id="kasuj" data-bs-toggle="modal" data-bs-target="#delAll">Usuń przychody i wydatki</button></span>
+										<span><button class="col p-2" id="kasuj1" data-bs-toggle="modal" data-bs-target="#delUser">Usuń moje konto</button></span>
 
 									</div>
 								</div>
@@ -543,6 +543,22 @@
 											<h1 class="modal-title fs-5" id="delAll">Czy jesteś pewien, że chcesz usunąć wszystkie swoje przychody i wydatki?</h1>
 										</div>
 										<form method="post" action="/settings/deleteAll">
+											<div class="modal-footer justify-content-center">
+												<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+												<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							
+							<div class="modal fade" id="delUser" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteUser" aria-hidden="true">
+								<div class="modal-dialog" role="document">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="delUser">Czy jesteś pewien, że chcesz usunąć swoje konto?</h1>
+										</div>
+										<form method="post" action="/settings/deleteUser">
 											<div class="modal-footer justify-content-center">
 												<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
 												<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
