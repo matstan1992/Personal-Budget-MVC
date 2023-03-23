@@ -54,8 +54,8 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (static::validate()) {
 			
-			$sql = "INSERT INTO incomes (id, user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) 
-					VALUES ('NULL', :user_id, :category, :amount, :date, :comment)";
+			$sql = "INSERT INTO incomes (user_id, income_category_assigned_to_user_id, amount, date_of_income, income_comment) 
+					VALUES (:user_id, :category, :amount, :date, :comment)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -126,8 +126,8 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (static::validate()) {
 			
-			$sql = "INSERT INTO expenses (id, user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) 
-					VALUES ('NULL', :user_id, :category, :paymentMethod, :amount, :date, :comment)";
+			$sql = "INSERT INTO expenses (user_id, expense_category_assigned_to_user_id, payment_method_assigned_to_user_id, amount, date_of_expense, expense_comment) 
+					VALUES (:user_id, :category, :paymentMethod, :amount, :date, :comment)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -235,8 +235,8 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (static::validateNewIncomeCategoryName()) {
 			
-			$sql = "INSERT INTO incomes_category_assigned_to_users (id, user_id, name) 
-					VALUES ('NULL', :user_id, :name)";
+			$sql = "INSERT INTO incomes_category_assigned_to_users (user_id, name) 
+					VALUES (:user_id, :name)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -385,8 +385,8 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (static::validateNewExpenseCategoryName()) {
 			
-			$sql = "INSERT INTO expenses_category_assigned_to_users (id, user_id, name) 
-					VALUES ('NULL', :user_id, :name)";
+			$sql = "INSERT INTO expenses_category_assigned_to_users (user_id, name) 
+					VALUES (:user_id, :name)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);
@@ -546,8 +546,8 @@ class IncomeExpenseManager extends \Core\Model
 	{
 		if (static::validateNewPaymentMethodName()) {
 			
-			$sql = "INSERT INTO payment_methods_assigned_to_users (id, user_id, name) 
-						VALUES ('NULL', :user_id, :name)";
+			$sql = "INSERT INTO payment_methods_assigned_to_users (user_id, name) 
+						VALUES (:user_id, :name)";
 			
 			$db = static::getDB();
             $stmt = $db->prepare($sql);

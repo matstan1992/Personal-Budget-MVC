@@ -110,55 +110,52 @@
 		
 		<article>
 			<div class="container col-lg-7 text-center">
-				<div class="row">
-					<div class="mx-auto">
+				<div class="row mx-auto">
 					
-						<h2 class="fw-bold mt-4">Użytkownik</h2>
-					
-						{% for message in flash_messages %}
-							<div class="alert alert-{{ message.type }} text-center">
-								{{ message.body }}
-							</div>
-						{% endfor %}
-
-						{% if user.errors is not empty %}
-							<p>Errors:</p>
-							<ul>
-								{% for error in user.errors %}
-									<li>{{ error }}</li>
-								{% endfor %}
-							</ul>
-						{% endif %}
-
-						<div class="col-sm-7 col-md-8 col-xl-10 col-xxl-8 mx-auto">
-							<form class="row mx-auto align-items-center" method="post" id="formProfile" action="/profile/update">
-
-								<div class="input-group mx-auto mb-2 mt-4" style="width: 370px;">
-									<span class="input-group-text" id="addon-wrapping"><i class="icon-user"></i></span>
-									<label class="visually-hidden" for="inputName">Nazwa</label>
-									<input class="form-control" type="text" placeholder="Użytkownik" id="inputName" name="name" value="{{ user.name }}" aria-label="Username" aria-describedby="addon-wrapping" required />
-								</div>
-								
-								<div class="input-group mx-auto mb-2" style="width: 370px;">
-									<span class="input-group-text" id="addon-wrapping"><i class="icon-mail"></i></span>
-									<label class="visually-hidden" for="inputEmail">E-mail</label>
-									<input class="form-control" type="email" placeholder="Adres e-mail" id="inputEmail" name="email" value="{{ user.email }}" aria-label="Email" aria-describedby="addon-wrapping" required />
-								</div>
-								
-								<div class="input-group mx-auto mb-2" style="width: 370px;">
-									<span class="input-group-text" id="addon-wrapping"><i class="icon-lock"></i></span>
-									<label class="visually-hidden">Hasło</label>
-									<input class="form-control" type="password" placeholder="Hasło" id="inputPassword" name="password" aria-label="Password" aria-describedby="helpBlock" />
-									<span class="input-group-text position-absolute end-0" style="height: 40px; margin-right:-30px;"><i class="fa-solid fa-eye" id="eye" style="cursor: pointer;"></i></span><span id="helpBlock" class="help-block mt-3 fw-bold">Pozostaw puste, aby nie zmieniać hasła</span>
-								</div>
-
-								<div class="row mx-auto justify-content-center">
-									<a href="/settings" class="button me-2" id="anuluj" type="reset" style="width: 120px;">Powrót</a>
-									<button type="submit" class="ms-2" style="width: 120px;">Zapisz</button>
-								</div>
-							</form>
+					<h2 class="fw-bold mt-4">Użytkownik</h2>
+				
+					{% for message in flash_messages %}
+						<div class="alert alert-{{ message.type }} text-center">
+							{{ message.body }}
 						</div>
-						
+					{% endfor %}
+
+					{% if user.errors is not empty %}
+						<p>Errors:</p>
+						<ul>
+							{% for error in user.errors %}
+								<li>{{ error }}</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+
+					<div class="row col-md-8 col-lg-10 col-xl-6 mx-auto">
+						<form class="row mx-auto align-items-center" method="post" id="formProfile" action="/profile/update">
+
+							<div class="input-group mx-auto mb-2 mt-4" style="width: 330px;">
+								<span class="input-group-text" id="addon-wrapping"><i class="icon-user"></i></span>
+								<label class="visually-hidden" for="inputName">Nazwa</label>
+								<input class="form-control" type="text" placeholder="Użytkownik" id="inputName" name="name" value="{{ user.name }}" aria-label="Username" aria-describedby="addon-wrapping" required />
+							</div>
+							
+							<div class="input-group mx-auto mb-2" style="width: 330px;">
+								<span class="input-group-text" id="addon-wrapping"><i class="icon-mail"></i></span>
+								<label class="visually-hidden" for="inputEmail">E-mail</label>
+								<input class="form-control" type="email" placeholder="Adres e-mail" id="inputEmail" name="email" value="{{ user.email }}" aria-label="Email" aria-describedby="addon-wrapping" required />
+							</div>
+							
+							<div class="input-group mx-auto mb-2" style="width: 330px;">
+								<span class="input-group-text" id="addon-wrapping"><i class="icon-lock"></i></span>
+								<label class="visually-hidden">Hasło</label>
+								<input class="form-control" type="password" placeholder="Hasło" id="inputPassword" name="password" aria-label="Password" aria-describedby="helpBlock" />
+								<span class="input-group-text position-absolute end-0" style="height: 40px; margin-right:-30px;"><i class="fa-solid fa-eye" id="eye" style="cursor: pointer;"></i></span><span id="helpBlock" class="help-block mt-3 fw-bold">Pozostaw puste, aby nie zmieniać hasła</span>
+							</div>
+
+							<div class="row mx-auto justify-content-center">
+								<a href="/settings" class="button me-2" id="anuluj" type="reset" style="width: 120px;">Powrót</a>
+								<button type="submit" class="ms-2" style="width: 120px;">Zapisz</button>
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
