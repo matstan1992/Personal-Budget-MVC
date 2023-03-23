@@ -47,53 +47,51 @@
 	<main>
 		
 		<article>
-			<div class="container col-lg-7 text-center">
-				<div class="row mb-0">
-					<div class="mx-auto">
-						{% for message in flash_messages %}
-							<div class="alert alert-{{ message.type }} text-center">
-								{{ message.body }}
-							</div>
-						{% endfor %}
-						<form class="text-center" method="post" action="/Income/new">
-							<h2 class="fw-bold mt-4">Dodaj przychód</h2>
+			<div class="container col-lg-9 text-center">
+				<div class="row mx-auto">
+					{% for message in flash_messages %}
+						<div class="alert alert-{{ message.type }} text-center">
+							{{ message.body }}
+						</div>
+					{% endfor %}
+					<form class="text-center" method="post" action="/Income/new">
+						<h2 class="fw-bold mt-4">Dodaj przychód</h2>
 
-							<div class="col-4 mx-auto">
-								<div class="input-group mx-auto mb-2 mt-3">
-									<span class="input-group-text"><i class="icon-money-1"></i></span>
-									<label class="visually-hidden">Kwota</label>
-									<input class="form-control" type="number" name="amount" min="0" max="999999.99" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required autofocus value="{{ amount }}">
-								</div>
+						<div class="col-md-5 col-xl-4 col-xxl-3 mx-auto">
+							<div class="input-group mx-auto mb-2 mt-3">
+								<span class="input-group-text"><i class="icon-money-1"></i></span>
+								<label class="visually-hidden">Kwota</label>
+								<input class="form-control" type="number" name="amount" min="0" max="999999.99" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required autofocus value="{{ amount }}">
 							</div>
-					
-							<div class="col-4 mx-auto">
-								<div class="input-group mx-auto mb-2 mt-3">
-									<span class="input-group-text"><i class="icon-calendar"></i></span>
-									<label class="visually-hidden">Data</label>
-									<input class="form-control" type="date" id="date" name="date" aria-label="Data" min="2000-01-01" max="{{ lastDate }}" value="{{ date }}" required>
-								</div>
+						</div>
+				
+						<div class="col-md-5 col-xl-4 col-xxl-3 mx-auto">
+							<div class="input-group mx-auto mb-2 mt-3">
+								<span class="input-group-text"><i class="icon-calendar"></i></span>
+								<label class="visually-hidden">Data</label>
+								<input class="form-control" type="date" id="date" name="date" aria-label="Data" min="2000-01-01" max="{{ lastDate }}" value="{{ date }}" required>
 							</div>
+						</div>
 
-							<legend class="fw-bold">Kategoria:</legend>
-							<div class=" col-4 mx-auto mb-2">
-								<select class="form-select" aria-label="Default select example" name="category" id="category">
-									{% for category in incomesCategories %}
-									<option value="{{category.id}}">{{category.name}}</option>
-									{% endfor %}
-								</select>
-							</div>
+						<legend class="fw-bold">Kategoria:</legend>
+						<div class="col-md-5 col-xl-4 col-xxl-3 mx-auto">
+							<select class="form-select" aria-label="Default select example" name="category" id="category">
+								{% for category in incomesCategories %}
+								<option value="{{category.id}}">{{category.name}}</option>
+								{% endfor %}
+							</select>
+						</div>
 
-							<div class="mx-auto mt-3 mb-1">
-								<legend class="fw-bold">Komentarz (opcjonalnie):</legend>
-								<textarea name="comment" class="col-9" rows="2" cols="50" style="resize: none;">{{ comment }}</textarea>
-							</div>
-							
-							<div class="row mx-auto">
-								<button id="anuluj" type="reset" class="col-3 mx-auto">Anuluj</button>
-								<button type="submit" class="col-3 mx-auto">Dodaj</button>
-							</div>
-						</form>
-					</div>
+						<div class="mx-auto mt-3 mb-1">
+							<legend class="fw-bold">Komentarz (opcjonalnie):</legend>
+							<textarea name="comment" class="col-12 col-md-8 col-xl-6 col-xxl-5 mx-auto" rows="2" cols="50" style="resize: none;">{{ comment }}</textarea>
+						</div>
+						
+						<div class="col-md-8 col-lg-9 mx-auto">
+							<button id="anuluj" type="reset" class="col-4 col-md-3 col-xl-2 me-4 mb-3">Anuluj</button>
+							<button type="submit" class="col-4 col-md-3 col-xl-2 ms-4 mb-3">Dodaj</button>
+						</div>
+					</form>	
 				</div>
 			</div>
 		</article>

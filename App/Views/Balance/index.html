@@ -335,8 +335,8 @@
 							</div>
 							
 							<div class="modal-footer justify-content-center">
-								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
-								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+								<button id="anulujModal" type="reset" class="col-4 mx-auto" data-bs-dismiss="modal">Anuluj</button>
+								<button id="zatwierdz" type="submit" class="col-4 mx-auto">Akceptuj</button>
 							</div>
 						
 						</form>
@@ -370,8 +370,8 @@
 
 							</div>
 							<div class="modal-footer justify-content-center">
-								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
-								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+								<button id="anulujModal" type="reset" class="col-4 mx-auto" data-bs-dismiss="modal">Nie</button>
+								<button id="zatwierdz" type="submit" class="col-4 mx-auto">Tak</button>
 							</div>
 						</form>
 					</div>
@@ -402,8 +402,8 @@
 
 							</div>
 							<div class="modal-footer justify-content-center">
-								<button id="anulujModal" type="reset" class="col-3 mx-auto" data-bs-dismiss="modal">Anuluj</button>
-								<button id="zatwierdz" type="submit" class="col-3 mx-auto">Zatwierdź</button>
+								<button id="anulujModal" type="reset" class="col-4 mx-auto" data-bs-dismiss="modal">Nie</button>
+								<button id="zatwierdz" type="submit" class="col-4 mx-auto">Tak</button>
 							</div>
 						</form>
 					</div>
@@ -416,7 +416,7 @@
 	<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	<script type="text/javascript">
 		window.onload = function () {
-		 
+		
 			var chart = new CanvasJS.Chart("chartContainer", {
 				
 				backgroundColor: false,
@@ -428,11 +428,18 @@
 				data: [{
 					type: "pie",
 					startAngle: 180,
-					yValueFormatString: "0.00 PLN",
-					indexLabel: "{label} {y}",
+					indexLabelFontSize: 16,
+					yValueFormatString: "#.##%",
+					indexLabel: "{label} - {y}",
 					dataPoints: [
+						{% set totalExpense = 0 %}
+						
 						{% for value in expenses %}
-							{ label: {{ value[0]|json_encode()|raw }}, y: {{ value[1]|json_encode()|raw }} },
+							{% set totalExpense = totalExpense + value[1] %}		
+						{% endfor %}
+						
+						{% for value in expenses %}
+							{ label: {{ value[0]|json_encode()|raw }}, y: ({{ value[1]|json_encode()|raw }}/{{ totalExpense }}) },
 						{% endfor %}
 					]
 				}]

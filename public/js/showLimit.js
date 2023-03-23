@@ -83,7 +83,7 @@ const renderOnDom = (categoryLimit, sumOfExpensesMonthly) => {
 	else
 	{
 		resultInfo.style.color = "green";
-		resultInfo.textContent = `W tym misiącu możesz jeszcze wydać: ${restAmount} zł`;
+		resultInfo.textContent = `W tym miesiącu możesz jeszcze wydać: ${restAmount} zł`;
 	}
 	
 };
